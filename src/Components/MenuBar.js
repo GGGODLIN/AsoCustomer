@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import { getItemlocalStorage } from '../Handlers/LocalStorageHandler';
+import { useWindowSize } from '../SelfHooks/useWindowSize';
 
 export const MenuBar = (props) => {
     //document.documentElement.clientWidth ,can by js controll responed
@@ -23,6 +24,7 @@ export const MenuBar = (props) => {
     const [OpenMenu, setOpenMenu] = useState(false);
     let location = useLocation();
     let history = useHistory();
+    const [width] = useWindowSize();
 
     return (
         <>
@@ -41,26 +43,47 @@ export const MenuBar = (props) => {
                     </SubContainer>
                     <SubContainer theme={{ height: "4.5rem" }}>
                         {getItemlocalStorage("Auth") ?
-                            <MenuItemLink to={"/Profile"} text={"會員專區"} padding={"0 2.75rem 0 0"} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
-                            : <MenuItemLink to={"/"} onClick={() => { setOpwnLoginCard(true) }} text={"登入會員"} padding={"0 2.75rem 0 0"} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
+                            <MenuItemLink to={"/Profile"} text={"會員專區"} padding={`0 ${width > 1024 ? "2.75rem" : "0.8125rem"}  0 0`} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
+                            : <MenuItemLink to={"/"} onClick={() => { setOpwnLoginCard(true) }} text={"登入會員"} padding={`0 ${width > 1024 ? "2.75rem" : "0.8125rem"}  0 0`} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
                         }
-                        <EasyButtonPulse
-                            text={"預約足測"}
-                            onClick={() => { history.push("/Reservation") }}
-                            theme={{
-                                backgroundColor: "#964f19",
-                                color: "#fff",
-                                borderRadius: "4px",
-                                textAlign: "center",
-                                fontSize: "14px",
-                                cursor: "pointer",
-                                fontWeight: 400,
-                                width: "166px",
-                                height: "40px",
-                                lineHeight: "40px",
-                                margin: "auto auto 12px",
-                                hoverBackgroundColor: "#6d3f00",
-                            }}></EasyButtonPulse>
+                        {width > 1024 ?
+                            <EasyButtonPulse
+                                text={"預約足測"}
+                                onClick={() => { history.push("/Reservation") }}
+                                theme={{
+                                    backgroundColor: "#964f19",
+                                    color: "#fff",
+                                    borderRadius: "4px",
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                    cursor: "pointer",
+                                    fontWeight: 400,
+                                    width: "166px",
+                                    height: "40px",
+                                    lineHeight: "40px",
+                                    margin: "auto auto 12px",
+                                    hoverBackgroundColor: "#6d3f00",
+                                }}></EasyButtonPulse>
+                            :
+                            <EasyButtonPulse
+                                text={"預約足測"}
+                                onClick={() => { history.push("/Reservation") }}
+                                theme={{
+                                    backgroundColor: "#964f19",
+                                    color: "#fff",
+                                    borderRadius: "4px",
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                    cursor: "pointer",
+                                    fontWeight: 400,
+                                    width: "80px",
+                                    height: "40px",
+                                    lineHeight: "40px",
+                                    margin: "auto auto 12px",
+                                    hoverBackgroundColor: "#6d3f00",
+                                }}></EasyButtonPulse>
+
+                        }
                     </SubContainer>
 
                 </Container>
