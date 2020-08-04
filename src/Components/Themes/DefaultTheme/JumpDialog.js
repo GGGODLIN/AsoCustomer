@@ -1,7 +1,8 @@
 export default {
     jumpDialog: {
         jumpDialogContainer: {
-            zIndex: "1000",
+            position:"fixed",
+            zIndex: "1002",
             height: "100vh",
             backgroundColor: "#0000008f",
             padding: "0.5rem",
@@ -10,7 +11,7 @@ export default {
             alignItems: "center",
         },
         jumpDialog: {
-            zIndex: "1001",
+            zIndex: "1003",
             padding: "1.25rem",
             boxShadow: "0 2px 4px #0000001a",
             borderRadius: "4px",

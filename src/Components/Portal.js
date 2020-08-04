@@ -5,6 +5,7 @@ import { BasicContainer } from './Containers';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 import { Text } from '../Components/Texts'
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -29,9 +30,9 @@ const warn = (options) => {
     portal({ ...options, keepAfterRouteChange: false, type: "warn" });
 }
 
-// const error = (options) => {
-//     portal({ ...options, keepAfterRouteChange: false, type: "error" });
-// }
+const error = (options) => {
+    portal({ ...options, keepAfterRouteChange: false, type: "error" });
+}
 
 // const info = (options) => {
 //     portal({ ...options, keepAfterRouteChange: false, type: "info" });
@@ -52,7 +53,7 @@ export const portalService = {
     onPortal,
     normal,
     warn,
-    // error,
+    error,
     // info,
     portal,
     clear
@@ -80,6 +81,12 @@ const PortalBase = (props, { id, fade = true }) => {
                 return (
                     <BasicContainer theme={portal.basicContainer}>
                         <ErrorOutlineIcon style={portal.errorOutlineIcon} />
+                    </BasicContainer>
+                )
+            case "error":
+                return (
+                    <BasicContainer theme={portal.basicContainer}>
+                        <CancelOutlinedIcon style={portal.errorCrossOutlineIcon} />
                     </BasicContainer>
                 )
             default:

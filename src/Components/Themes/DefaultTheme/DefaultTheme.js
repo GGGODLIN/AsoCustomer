@@ -13,6 +13,7 @@ import tables from "./Tables";
 import jumpDialog from "./JumpDialog";
 import jumpAlerts from "./JumpAlerts";
 import formCard from "./FormCard";
+import loginCard from "./LoginCard";
 import cardTable from "./CardTable";
 import list from "./Lists";
 import menuBar from "./MenuBar";
@@ -30,6 +31,7 @@ export default {
     ...jumpAlerts,
     ...buttons,
     ...formCard,
+    ...loginCard,
     ...portal,
     pages: {
         homePage: {

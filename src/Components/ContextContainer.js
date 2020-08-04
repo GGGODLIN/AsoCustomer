@@ -13,7 +13,7 @@ import { LoginCard } from '../Components/LoginCard'
 */
 export const ContextContainer = (props) => {
 
-  const { Theme, setTheme, OpwnLoginCard } = useContext(Context);
+  const { Theme, setTheme, OpwnLoginCard, setOpwnLoginCard } = useContext(Context);
   //const { } = Theme;
 
   return (
@@ -26,7 +26,7 @@ export const ContextContainer = (props) => {
       <MenuBar />
       <JumpAlert />
       <Portal />
-      {OpwnLoginCard && <LoginCard >asdasd</LoginCard>}
+      {OpwnLoginCard && <LoginCard close={() => { setOpwnLoginCard(false) }}></LoginCard>}
       {/* 
               Date   : 2020-06-12 12:18:46
               Author : Arhua Ho
