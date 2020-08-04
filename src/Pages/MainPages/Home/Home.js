@@ -32,7 +32,7 @@ export const Home = (props) => {
                 <div style={{ height: "1000rem" }}>
                     sdfsdf
                 </div>
-                小於768時渲染的組件
+                小於768時渲染的組件1
             </BasicContainer>
             }
 

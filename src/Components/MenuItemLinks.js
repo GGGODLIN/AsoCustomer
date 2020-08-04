@@ -9,7 +9,7 @@ const MenuItemLinkBase = (props) => {
     return (
         <>
             <BasicContainer className={props.className} onMouseOver={() => { setClassRight("right") }} onMouseOut={() => { setClassRight("") }} theme={{ display: "inline-block", top: props.top, padding: props.padding }}>
-                <Link to={props.to ?? "#"} style={{ textDecoration: "none", display: "inline-block" }}>
+                <Link to={props.to ?? "#"} onClick={() => { props?.onClick && props.onClick() }} style={{ textDecoration: "none", display: "inline-block" }}>
                     <Text theme={{ userSelect: "none", display: "inline-block", height: "100%", cursor: "pointer" }}>
                         <Text theme={{
                             userSelect: "none",

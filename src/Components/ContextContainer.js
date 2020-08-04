@@ -4,6 +4,7 @@ import { Context } from '../Store/store'
 import { MenuBar } from '../Components/MenuBar'
 import { JumpAlert } from './JumpAlerts'
 import { Portal } from './Portal'
+import { LoginCard } from '../Components/LoginCard'
 
 /* 
    Date   : 2020-06-09 14:40:41
@@ -12,7 +13,7 @@ import { Portal } from './Portal'
 */
 export const ContextContainer = (props) => {
 
-  const { Theme, setTheme } = useContext(Context);
+  const { Theme, setTheme, OpwnLoginCard } = useContext(Context);
   //const { } = Theme;
 
   return (
@@ -20,11 +21,12 @@ export const ContextContainer = (props) => {
       {/* 
               Date   : 2020-06-12 12:18:46
               Author : Arhua Ho
-              Content: 不隨Router re-render的組件
+              Content: 不隨Router 卸載、掛載的組件
             */}
       <MenuBar />
       <JumpAlert />
       <Portal />
+      {OpwnLoginCard && <LoginCard >asdasd</LoginCard>}
       {/* 
               Date   : 2020-06-12 12:18:46
               Author : Arhua Ho

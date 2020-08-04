@@ -17,10 +17,20 @@ import { History } from '../Pages/MainPages/History/History';
    Author : Arhua Ho
    Content: 頂部導航列標題對應
 */
-export const navbarTitleMapping = {
+export const navbarTitleMappingUnLogin = {
    "/Locations": "服務據點",// 服務據點
    "/Reservation": "預約足測",// 預約足測
-   "/Profile": "會員資料", // 會員專區
+   "/Profile": "會員專區", // 會員專區
+   "/": "首頁",// 首頁
+   "/Faq": "常見問題",// 常見問題
+   "/History": "預約紀錄",// 預約紀錄
+   "/404": "錯誤頁面",
+};
+
+export const navbarTitleMappingLogin = {
+   "/Locations": "服務據點",// 服務據點
+   "/Reservation": "預約足測",// 預約足測
+   "/Profile": "會員資料", // 會員資料
    "/": "首頁",// 首頁
    "/Faq": "常見問題",// 常見問題
    "/History": "預約紀錄",// 預約紀錄

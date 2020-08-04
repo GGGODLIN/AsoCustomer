@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { BasicContainer, Container, SubContainer } from './Containers';
 import { Context } from '../Store/store'
 import { Text } from './Texts';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import SortIcon from '@material-ui/icons/Sort';
-import { navbarTitleMapping } from '../Mappings/Mappings';
+import { navbarTitleMappingLogin, navbarTitleMappingUnLogin } from '../Mappings/Mappings';
 import { MenuItemLink } from './MenuItemLinks';
 import { EasyButtonPulse } from './Buttons';
 import PersonIcon from '@material-ui/icons/Person';
@@ -14,10 +14,11 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import AddIcon from '@material-ui/icons/Add';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import { getItemlocalStorage } from '../Handlers/LocalStorageHandler';
 
 export const MenuBar = (props) => {
     //document.documentElement.clientWidth ,can by js controll responed
-    const { Theme } = useContext(Context);
+    const { Theme, setOpwnLoginCard } = useContext(Context);
     const { menuBar } = Theme;
     const [OpenMenu, setOpenMenu] = useState(false);
     let location = useLocation();
@@ -32,14 +33,17 @@ export const MenuBar = (props) => {
                 <Container theme={{ justify: "space-around" }}>
                     <SubContainer theme={{ height: "4.5rem" }}>
                         <BasicContainer theme={menuBar.leftModeImgContainer}>
-                            <img onClick={() => { history.push("/") }} alt="sdf" width="200" style={{ userSelect: "none", cursor: "pointer" }} height="42.36" src={"/2db8549.png"}></img>
+                            <img onClick={() => { history.push("/") }} alt="sdf" width="200" style={{ userSelect: "none", cursor: "pointer" }} height="42.36" src={"/bdcb328.png"}></img>
                         </BasicContainer>
                         <MenuItemLink to={"/"} text={"　首頁　"} padding={"0 2.75rem 0"} top={"-1rem"} active={location.pathname === "/"}></MenuItemLink>
                         <MenuItemLink to={"/Locations"} text={"服務據點"} padding={"0 2.75rem 0 0"} top={"-1rem"} active={location.pathname === "/Locations"}></MenuItemLink>
                         <MenuItemLink to={"/Faq"} text={"常見問題"} padding={"0 2.75rem 0 0"} top={"-1rem"} active={location.pathname === "/Faq"}></MenuItemLink>
                     </SubContainer>
                     <SubContainer theme={{ height: "4.5rem" }}>
-                        <MenuItemLink to={"/Profile"} text={"會員專區"} padding={"0 2.75rem 0 0"} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
+                        {getItemlocalStorage("Auth") ?
+                            <MenuItemLink to={"/Profile"} text={"會員專區"} padding={"0 2.75rem 0 0"} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
+                            : <MenuItemLink to={"/"} onClick={() => { setOpwnLoginCard(true) }} text={"登入會員"} padding={"0 2.75rem 0 0"} top={"-.1rem"} active={location.pathname === "/Profile"}></MenuItemLink>
+                        }
                         <EasyButtonPulse
                             text={"預約足測"}
                             onClick={() => { history.push("/Reservation") }}
@@ -67,7 +71,9 @@ export const MenuBar = (props) => {
             <BasicContainer theme={menuBar.topModeTitleBasicContainer}>
                 {/* 開關功能選單按鈕與顯示目前功能名稱 */}
                 <Container theme={{ justify: "center" }}>
-                    <Text theme={{ userSelect: "none", display: "inline-block", fontWeight: 600, fontSize: "1.25rem", height: "100%", lineHeight: "4.5rem" }}>{navbarTitleMapping[location.pathname]}</Text>
+                    <Text theme={{ userSelect: "none", display: "inline-block", fontWeight: 600, fontSize: "1.25rem", height: "100%", lineHeight: "4.5rem" }}>
+                        {getItemlocalStorage("Auth") ? navbarTitleMappingLogin[location.pathname] : navbarTitleMappingUnLogin[location.pathname]}
+                    </Text>
                     <PersonIcon
                         onClick={() => { history.push("/Profile") }}
                         style={{
