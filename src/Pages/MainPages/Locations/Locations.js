@@ -168,39 +168,23 @@ export const Locations = (props) => {
     }
     //#endregion
 
-    //#region 查詢列表API
-    const getRoleByPageOrkey = useCallback(async (page = 1, key) => {
-        return await fetch(`${APIUrl}api/Shops/GetList`,
-            {
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-            }
-        )//查詢角色、表格翻頁
+    //#region 查詢門市列表API
+    const getLocations = useCallback(async () => {
+        return await fetch(`${APIUrl}api/Shops/GetList`)//查詢門市列表
             .then(Result => {
                 const ResultJson = Result.clone().json();//Respone.clone()
                 return ResultJson;
             })
             .then((PreResult) => {
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
                 if (PreResult.success) {
                     //console.log(PreResult.response)
                     setTableData({ data: PreResult.response });
-                    return "查詢角色表格資訊成功"
+                    return "查詢門市列表資訊成功"
                 } else {
-                    throw new Error("查詢角色表格資訊失敗");
+                    throw new Error("查詢門市列表資訊失敗");
                 }
             })
             .catch((Error) => {
-                clearlocalStorage();
-                history.push("/Login");
                 throw Error;
             })
             .finally(() => {
@@ -211,225 +195,7 @@ export const Locations = (props) => {
 
     }, [APIUrl, history])
 
-    const [execute, Pending] = useAsync(getRoleByPageOrkey, true);
-    //#endregion
-
-    //#region 滾動底部加載查詢列表API
-    const getRoleByPageOrkeyScrollBottom = useCallback(async (page = 1, key) => {
-        return await fetch(`${APIUrl}api/UserInfo/Get?page=${page}&key=${(key ? `${key}` : "")}`,
-            {
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    // console.log(PreResult.response)
-                    setTableData((d) => ({ ...d, data: [...(d?.data ?? []), ...PreResult.response.data] }));
-                    setScrollPage((p) => (p + 1)); // 頁數+1
-                    return "查詢角色表格資訊成功"
-                } else {
-                    throw new Error("查詢角色表格資訊失敗");
-                }
-            })
-            .catch((Error) => {
-                clearlocalStorage();
-                history.push("/Login");
-                throw Error;
-            })
-            .finally(() => {
-
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [executeScrollBottom, PendingScrollBottom] = useAsync(getRoleByPageOrkeyScrollBottom, false);
-    //#endregion
-
-    //#region 刪除顧客 API
-    const delAdminUser = useCallback(async (id) => {
-        //console.log("id")
-        return await fetch(`${APIUrl}api/UserInfo/Delete?id=${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                }
-            }
-        )//刪除顧客
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    alertService.normal("刪除顧客成功", { autoClose: true });
-                    return "刪除顧客成功"
-                } else {
-                    alertService.normal("刪除顧客失敗", { autoClose: true });
-                    throw new Error("刪除顧客失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                execute(1);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history, execute])
-
-    const [DelAdminUserExecute, DelAdminUserPending] = useAsync(delAdminUser, false);
-    //#endregion
-
-    //#region 新增顧客API 
-    const addUser = useCallback(async (Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr) => {
-        //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
-        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
-        return await fetch(`${APIUrl}api/UserInfo/Post`,
-            {
-                method: "POST",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-                body: JSON.stringify({
-                    cLoginName: Email,
-                    cLoginPWD: Phone,
-                    cRealName: Name,
-                    cBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
-                    CreateTime: new Date(),
-                    IsDeleted: false,
-                    CommAddr: Addr,
-                    CommCounty: County?.value,
-                    CommDistrict: District?.value,
-                    cEmail: Email,
-                    cTel: Phone,
-                })
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                //console.log(PreResult)
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    alertService.normal("成功新增顧客資訊", { autoClose: true });
-                    return "成功新增顧客資訊"
-                } else {
-                    alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增顧客資訊失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                execute(1);
-                setOpenAddJumpDialog(false);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [AddUserExecute, AddUserPending] = useAsync(addUser, false);
-    //#endregion
-
-    //#region 編輯顧客API 
-    const editUser = useCallback(async (oldData, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr) => {
-        //return console.log(`${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`, `${ServiceArea.map((item) => { return item?.value })?.join()}`);
-        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
-        return await fetch(`${APIUrl}api/UserInfo/Put`,
-            {
-                method: "PUT",
-                headers: {
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
-                },
-                body: JSON.stringify({
-                    ...oldData,
-                    //cLoginName: Email,
-                    //cLoginPWD: Phone,
-                    cRealName: Name,
-                    cBirthDay: `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}`,
-                    ModifyTime: new Date(),
-                    IsDeleted: false,
-                    CommAddr: Addr,
-                    CommCounty: County?.value,
-                    CommDistrict: District?.value,
-                    cEmail: Email,
-                    cTel: Phone,
-                })
-            }
-        )//查詢角色、表格翻頁
-            .then(Result => {
-                const ResultJson = Result.clone().json();//Respone.clone()
-                return ResultJson;
-            })
-            .then((PreResult) => {
-                //console.log(PreResult)
-                if (PreResult.Status === 401) {
-                    //Token過期 強制登出
-                    clearlocalStorage();
-                    history.push("/Login");
-                    throw new Error("Token過期 強制登出");
-                }
-
-                if (PreResult.success) {
-                    alertService.normal("成功新增顧客資訊", { autoClose: true });
-                    return "成功新增顧客資訊"
-                } else {
-                    alertService.warn(PreResult.msg, { autoClose: true });
-                    throw new Error("新增顧客資訊失敗");
-                }
-            })
-            .catch((Error) => {
-                throw Error;
-            })
-            .finally(() => {
-                execute(1);
-                setOpenEditJumpDialog(false);
-            });
-
-        // 這裡要接著打refresh 延長Token存活期
-
-    }, [APIUrl, history])
-
-    const [EditUserExecute, EditUserPending] = useAsync(editUser, false);
+    const [execute, Pending] = useAsync(getLocations, true);
     //#endregion
 
     return (
