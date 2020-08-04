@@ -300,7 +300,7 @@ const FormCardTextInputBase = (props) => {
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel(props)} >
+                    <Text style={{ textShadow: "0 0 1px #444" }} theme={props?.theme?.formCardTextInputLabel ?? form.formCardTextInputLabel(props)} >
                         {props.label === "" ? "0" : props.label}
                     </Text>
                 </BasicContainer>
@@ -364,12 +364,14 @@ export const FormCardTextInput = styled(FormCardTextInputBase).attrs((props) => 
         font-weight: ${props => props?.theme?.input?.fontWeight ?? '500'};
         letter-spacing: ${props => props?.theme?.input?.letterSpacing ?? '0.0075em'};
         text-align: ${props => props?.theme?.input?.textAlign ?? 'initial'};
+        transition: font-size 0.2s; 
 
         &:focus {
             outline: ${props => props?.theme?.input?.focusOutline ?? '1px solid #409eff00'};
-            border: ${props => props?.theme?.input?.focusBorder ?? '2px solid #444'};
+            //border: ${props => props?.theme?.input?.focusBorder ?? '2px solid #444'};
             border-bottom: ${props => props?.theme?.input?.focusBorderBottom};
-            border-radius: ${props => props?.theme?.input?.focusBorderRadius ?? '4px'};
+            font-size: ${props => props?.theme?.input?.focusFontSize};
+            border-radius: ${props => props?.theme?.input?.focusBorderRadius ?? '0px'};
             background-color: ${props => props?.theme?.input?.focusBackgroundColor ?? 'initial'};
         }
     }

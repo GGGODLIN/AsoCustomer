@@ -68,5 +68,6 @@ export default {
             fontSize: "0.875rem",
             cursor: "pointer",
         },
+
     }
 }

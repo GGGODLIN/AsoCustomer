@@ -63,9 +63,9 @@ export const useLoginAsync = (asyncFunction, immediate = true) => {
        Author : Arhua Ho
        Content: useCallback保證了asyncFunction在重新渲染時不會被呼叫，而重複執行
     */
-    const execute = useCallback(() => {
+    const execute = useCallback((...values) => {
         setPending(true);
-        return asyncFunction()
+        return asyncFunction(...values)
             .then(response => console.log(response))
             .catch(error => "error")
             .finally(() => "reset");
