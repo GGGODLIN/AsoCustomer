@@ -7,7 +7,7 @@ export default {
         top: "4.5rem",
         bottom: 0,
         overflowY: 'scroll',
-        overflowX: 'scroll',
+        overflowX: 'hidden',
         //backgroundColor: '#fff',
         scrollHeight: ".8rem",
         tablet: {
@@ -19,7 +19,7 @@ export default {
             right: "0rem",
             bottom: 0,
             overflowY: 'scroll',
-            overflowX: 'scroll',
+            overflowX: 'hidden',
             //backgroundColor: '#fff',
             scrollHeight: ".8rem",
         }
