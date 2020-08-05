@@ -453,3 +453,92 @@ export const BasicContainer = styled.div.attrs((props) => ({}))`
         }
     }
 `
+
+
+/* 
+   Date   : 2020-05-18 15:07:21
+   Author : GGGODLIN
+   Content: hover伸縮
+*/
+export const ContainerScale = styled.div.attrs((props) => ({}))`
+    //Flex設置
+    //width: ${props => props?.theme?.width ?? '100%'};
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    flex-direction: ${props => props?.theme?.direction ?? 'initial'}; //控制子組件排列方向: row、row-reverse、column、column-reverse
+    justify-content: ${props => props?.theme?.justify ?? 'initial'};  //控制子組件在水平方向上的對齊: flex-start、center、flex-end、space-between、space-around、space-evenly
+    align-items: ${props => props?.theme?.alignItems ?? 'initial'};   //控制子組件在垂直方向上的對齊: flex-start、center、flex-end、stretch、baseline
+    
+    //定位
+    position: ${props => props?.theme?.position ?? 'relative'};       //控制position屬性: static、relative、fixed、absolute、sticky、inherit、initial
+    top: ${props => props?.theme?.top ?? 'initial'};
+    right: ${props => props?.theme?.right ?? 'initial'};
+    bottom: ${props => props?.theme?.bottom ?? 'initial'};
+    left: ${props => props?.theme?.left ?? 'initial'};
+    z-index: ${props => props?.theme?.zIndex ?? 'initial'};
+
+    //寬高
+    height: ${props => props?.theme?.height ?? 'initial'};
+    min-width: ${props => props?.theme?.minWidth ?? '0'};//修復滾動條 x 方向
+
+    //外距、邊框、內距
+    margin: ${props => props?.theme?.margin ?? 'initial'};
+    border: ${props => props?.theme?.border ?? 'initial'};
+    border-bottom: ${props => props?.theme?.borderBottom};
+    border-radius: ${props => props?.theme?.borderRadius ?? 'initial'};
+    padding: ${props => props?.theme?.padding ?? 'initial'};
+
+    //溢出
+    overflow-y: ${props => props?.theme?.overflowY ?? 'initial'};
+    overflow-x: ${props => props?.theme?.overflowX ?? 'initial'};
+
+    //滾動條美化
+    ::-webkit-scrollbar {
+        width: 0.5em;
+        height: ${props => props?.theme?.scrollHeight ?? 'initial'}; //scroll-x 的高度
+        }
+    ::-webkit-scrollbar-track {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        margin:0px 0.1rem 5px 0;
+        }
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background: ${props => props?.theme?.scrollUnhoverBackgroundColor ?? '#9093994d'};
+        }
+    ::-webkit-scrollbar-corner {
+        background-color: ${props => props?.theme?.scrollConerColor ?? '#90939900'};
+        }
+    &:hover::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background: ${props => props?.theme?.scrollHoverBackgroundColor ?? '#9093994d'};
+        }
+    &:hover {
+        transform: scale(1.2);
+    }
+
+    //陰影
+    box-shadow: ${props => props?.theme?.boxShadow ?? 'initial'};
+
+    //背景
+    background-attachment: ${props => props?.theme?.attachment ?? 'initial'}; 
+    background-color: ${props => props?.theme?.backgroundColor ?? 'initial'};
+    background-image: ${props => 'url(' + props?.theme?.img + ')' ?? 'initial'};
+    background-position: ${props => props?.theme?.backgroundPosition ?? 'initial'};
+    background-position-y: ${props => props?.theme?.positiony ?? 'initial'};
+    background-position-x: ${props => props?.theme?.positionx ?? 'initial'};
+    background-repeat: ${props => props?.theme?.backgroundRepeat ?? 'initial'};
+    background-size: ${props => props?.theme?.backgroundSize ?? 'initial'};
+
+    //游標
+    cursor: ${props => props?.theme?.cursor ?? 'initial'}; 
+
+    //轉場
+    transition: ${props => props?.theme?.transition ?? 'initial'}; 
+
+    //動畫
+
+`
