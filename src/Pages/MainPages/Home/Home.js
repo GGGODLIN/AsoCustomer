@@ -328,20 +328,20 @@ export const Home = (props) => {
 
                         }}>各門市開放每日十位預約體驗名額，可免費享有動態足壓量測</Text>
                     <Container theme={{ alignItems: 'center', }}>
-                        <div style={{ margin: '0 5% 0 10%', width: '12.5%' }}>
+                        <div style={{ margin: '0 5% 0 10%', width: '10%', padding: '1.25%' }}>
                             <img src="/3078658.png" width='100%' alt="Background" />
                         </div>
-                        <div style={{ margin: '0 5% 0 5%', width: '12.5%' }}>
+                        <div style={{ margin: '0 5% 0 5%', width: '10%', padding: '1.25%' }}>
                             <img src="/3078658.png" width='100%' alt="Background" />
                         </div>
-                        <div style={{ margin: '0 5% 0 5%', width: '12.5%' }}>
+                        <div style={{ margin: '0 5% 0 5%', width: '10%', padding: '1.25%' }}>
                             <img src="/3078658.png" width='100%' alt="Background" />
                         </div>
-                        <div style={{ margin: '0 10% 0 5%', width: '12.5%' }}>
+                        <div style={{ margin: '0 10% 0 5%', width: '10%', padding: '1.25%' }}>
                             <img src="/3078658.png" width='100%' alt="Background" />
                         </div>
                     </Container>
-                    <Container theme={{ alignItems: 'center' }}>
+                    <Container theme={{ alignItems: 'center', margin: '20px 0 20px 0' }}>
                         <Text
                             //style={{ textShadow: '0 0 1px #444' }}
                             theme={{
@@ -354,7 +354,7 @@ export const Home = (props) => {
                                 width: '12.5%'
                             }}>預約</Text>
                         <Text
-                            //style={{ textShadow: '0 0 1px #444' }}
+                            style={{ borderBottom: '0.5px solid #49589b', }}
                             theme={{
                                 color: "#49589b",
                                 fontSize: "28px",
@@ -363,7 +363,7 @@ export const Home = (props) => {
                                 textAlign: 'center',
                                 //margin: '0 5% 0 10%',
                                 width: '10%',
-                                borderBottom: '1px solid red',
+                                //borderBottom: '10px solid #49589b',
                             }}> </Text>
                         <Text
                             //style={{ textShadow: '0 0 1px #444' }}
@@ -373,31 +373,102 @@ export const Home = (props) => {
                                 fontWeight: "700",
                                 lineHeight: '24px',
                                 textAlign: 'center',
+                                //margin: '0 5% 0 0',
+                                width: '12.5%'
+                            }}>預約</Text>
+                        <Text
+                            style={{ borderBottom: '0.5px solid #49589b', }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 10%',
+                                width: '10%',
+                                //borderBottom: '10px solid #49589b',
+                            }}> </Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 5%',
+                                width: '12.5%'
+                            }}>預約</Text>
+                        <Text
+                            style={{ borderBottom: '0.5px solid #49589b', }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 10%',
+                                width: '10%',
+                                //borderBottom: '10px solid #49589b',
+                            }}> </Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 10% 0 0',
+                                width: '12.5%'
+                            }}>預約</Text>
+                    </Container>
+                    <Container theme={{ alignItems: 'center' }}>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "18px",
+                                fontWeight: "600",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 0 0 5%',
+                                width: '22.5%'
+                            }}>致電至您方便的門市進行預約</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "18px",
+                                fontWeight: "600",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 0',
+                                width: '22.5%'
+                            }}>依預約時間前往體驗動態足壓量測</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "18px",
+                                fontWeight: "600",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 0',
+                                width: '22.5%'
+                            }}>阿瘦專業服務人員協助報告解讀、健康對策推薦</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "18px",
+                                fontWeight: "600",
+                                lineHeight: '24px',
+                                textAlign: 'center',
                                 margin: '0 5% 0 0',
-                                width: '12.5%'
-                            }}>預約</Text>
-                        <Text
-                            //style={{ textShadow: '0 0 1px #444' }}
-                            theme={{
-                                color: "#49589b",
-                                fontSize: "28px",
-                                fontWeight: "700",
-                                lineHeight: '24px',
-                                textAlign: 'center',
-                                margin: '0 5% 0 5%',
-                                width: '12.5%'
-                            }}>預約</Text>
-                        <Text
-                            //style={{ textShadow: '0 0 1px #444' }}
-                            theme={{
-                                color: "#49589b",
-                                fontSize: "28px",
-                                fontWeight: "700",
-                                lineHeight: '24px',
-                                textAlign: 'center',
-                                margin: '0 10% 0 5%',
-                                width: '12.5%'
-                            }}>預約</Text>
+                                width: '22.5%'
+                            }}>半年後回店追蹤足部壓力狀況，保持健康好腳力</Text>
+
                     </Container>
                 </Container>
                 <div style={{ height: "1000rem" }}>
