@@ -4,11 +4,12 @@ import { Context } from '../Store/store'
 import { Container, BasicContainer, SubContainer } from './Containers';
 import { Text } from './Texts';
 import { EasyButton } from './Buttons';
-import { FormControl, FormRow, FormCardTextInput } from './Forms';
-import { useForm } from '../SelfHooks/useForm';
+import { FormControl, FormRow, FormCardTextInput, FormCardSelector, CheckboxWhatever } from './Forms';
+import { useForm, useSelector } from '../SelfHooks/useForm';
 import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../Handlers/LocalStorageHandler';
 import { useLoginAsync } from '../SelfHooks/useAsync';
 import { portalService } from './Portal'
+import { YearFrom1930to, getDayByYearAndMonth, month } from '../Mappings/Mappings';
 
 //#region 表單卡片基底
 const LoginCardBase = (props) => {
@@ -17,9 +18,13 @@ const LoginCardBase = (props) => {
     const { loginCard } = Theme;
     const [IsLogin, setIsLogin] = useState("");
 
+
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
-
+    const [BirthYear, BirthYearhandler, BirthYearregExpResult, BirthYearResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日西元年"]); // 生日西元年欄位
+    const [BirthMonth, BirthMonthhandler, BirthMonthregExpResult, BirthMonthResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日月份"]);// 生日月份欄位
+    const [BirthDay, BirthDayhandler, BirthDayregExpResult, BirthDayResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日日期"]); // 生日日期欄位
+    const [Agreement, setAgreement] = useState(false); // 同意條款
     //#region 登入 API
     const loginVerification = useCallback(async (account, pass) => {
         //let uid = "";
@@ -38,6 +43,17 @@ const LoginCardBase = (props) => {
             .then((PreResult) => {
                 if (PreResult.success) {
                     //setItemlocalStorage("Auth", PreResult.token);
+                    portalService.success({
+                        autoClose: false,
+                        removeYesButton: true,
+                        removeNoButton: true,
+                        content: (
+                            <>
+                                <Text theme={loginCard.exportText}>
+                                    登入成功
+                                </Text>
+                            </>)
+                    })
                 } else {
                     //console.log(PreResult)
                     if (PreResult?.msg) {
@@ -66,6 +82,7 @@ const LoginCardBase = (props) => {
 
         await fetch(`${APIUrl}api/Login/JWTTokenCustomer?name=${account}&pass=${pass}`)//透過Token取得使用者資訊
             .then(Result => {
+                //portalService.clear();
                 const ResultJson = Result.clone().json();//Respone.clone()
                 return ResultJson;
             })
@@ -95,7 +112,7 @@ const LoginCardBase = (props) => {
     }, [Account, APIUrl, Pass, Switch])
 
     const [execute] = useLoginAsync(loginVerification, false);
-    //#endregion
+    //#endregion 
 
     return (
         <>
@@ -136,9 +153,11 @@ const LoginCardBase = (props) => {
                                             theme={loginCard.AccountTextInput}
                                         ></FormCardTextInput>
                                     </FormRow>
+                                    {/* 登入-密碼 */}
                                     <FormRow>
                                         <FormCardTextInput
                                             label={"登入密碼"}
+                                            pass
                                             hint={<>
                                                 <Text theme={{ ...loginCard.forgetText, margin: 0 }}>忘記密碼了嗎？</Text>
                                                 <Text onClick={() => { setIsLogin("忘記密碼") }} theme={{ ...loginCard.forgetTextRight, margin: 0 }}> 寄送 Email 重設密碼</Text>
@@ -147,12 +166,17 @@ const LoginCardBase = (props) => {
                                             onChange={Passhandler}
                                             regExpResult={PassregExpResult}
                                             placeholder={"預設為您的手機號碼，例 0912666888"}
-                                            theme={loginCard.AccountTextInput}
+                                            theme={{
+                                                ...loginCard.AccountTextInput,
+                                                input: {
+                                                    ...loginCard.AccountTextInput.input,
+                                                    ...(Pass.length > 0 ? { letterSpacing: "0.5rem" } : {})
+                                                }
+                                            }}
                                         ></FormCardTextInput>
                                     </FormRow>
                                 </FormControl>
-                                {/* 登入-密碼 */}
-
+                                {/* 按鈕 */}
                                 <EasyButton theme={loginCard.loginButton} text={"立即登入"} onClick={() => { execute(Account, Pass); }} />
                                 <Text theme={loginCard.forgetText}>還沒有會員嗎？</Text>
                                 <Text onClick={() => { setIsLogin("註冊帳號") }} theme={loginCard.forgetTextRight}> 註冊帳號</Text>
@@ -160,10 +184,72 @@ const LoginCardBase = (props) => {
                         {/* 註冊卡片 */}
                         {IsLogin === "註冊帳號" &&
                             <SubContainer style={{ borderTopRightRadius: "16px", borderBottomRightRadius: "16px" }} theme={{ occupy: 7.2, height: "36.25rem" }}>
-                                <Text style={{ userSelect: "none" }} theme={{ display: "block", margin: "6rem 0 0 2.1rem", color: "#444", fontSize: "1.75rem", fontWeight: 600 }}>註冊帳號</Text>
+                                <Text style={{ userSelect: "none" }} theme={{ display: "block", margin: "6rem 0 2rem 2.1rem", color: "#444", fontSize: "1.75rem", fontWeight: 600 }}>註冊帳號</Text>
                                 {/* 在這裡加上 註冊表單... */}
 
-                                <EasyButton theme={loginCard.loginButton} text={"註冊"} onClick={() => { console.log("...做註冊要做的事") }} />
+                                {/* 使用範例*/}
+                                <FormControl theme={{
+                                    width: "100%",
+                                    padding: "0 2.1rem 0",
+                                    overflowY: "scroll",
+                                    height: "calc( 100% - 20.1rem )"
+                                }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
+                                    <FormRow>
+                                        <FormCardTextInput
+                                            label={(<>姓名<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            //hint={""}
+                                            value={Account}
+                                            onChange={Accounthandler}
+                                            regExpResult={AccountregExpResult}
+                                            placeholder={"請輸入真實中文姓名，以便確認您的預約資料"}
+                                            theme={loginCard.AccountTextInput}
+                                        ></FormCardTextInput>
+                                    </FormRow>
+                                    <FormRow>
+                                        <FormCardSelector
+                                            label={"出生年月日"}
+                                            hint={""}
+                                            placeholder={"西元年"}
+                                            value={BirthYear}
+                                            isSearchable
+                                            options={YearFrom1930to(2020)}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthYearResetValue(value); BirthMonthResetValue(''); BirthDayResetValue('') }}
+                                            regExpResult={BirthYearregExpResult}
+                                            theme={loginCard.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                        <FormCardSelector
+                                            label={""}
+                                            hint={""}
+                                            placeholder={"月份"}
+                                            value={BirthMonth}
+                                            isSearchable
+                                            options={month}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthMonthResetValue(value); BirthDayResetValue('') }}
+                                            regExpResult={BirthMonthregExpResult}
+                                            theme={loginCard.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                        <FormCardSelector
+                                            label={""}
+                                            hint={""}
+                                            placeholder={"日期"}
+                                            value={BirthDay}
+                                            isSearchable
+                                            options={getDayByYearAndMonth(BirthYear.value, BirthMonth.value)}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthDayResetValue(value) }}
+                                            regExpResult={BirthDayregExpResult}
+                                            theme={loginCard.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                    </FormRow>
+                                </FormControl>
+
+                                <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", margin: "2rem 0 0 2.1rem", cursor: "pointer" }}>
+                                    <CheckboxWhatever checked={Agreement} ></CheckboxWhatever>
+                                    我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
+                                </Text>
+                                <EasyButton theme={loginCard.signUpButton} text={"註冊"} onClick={() => { console.log("...做註冊要做的事") }} />
                                 <Text theme={loginCard.forgetText}>已經有會員了嗎？</Text>
                                 <Text onClick={() => { setIsLogin("") }} theme={loginCard.forgetTextRight}> 登入帳號</Text>
                             </SubContainer>

@@ -26,6 +26,10 @@ const normal = (options) => {
     portal({ ...options, keepAfterRouteChange: false, type: "normal" });
 }
 
+const success = (options) => {
+    portal({ ...options, keepAfterRouteChange: false, type: "success" });
+}
+
 const warn = (options) => {
     portal({ ...options, keepAfterRouteChange: false, type: "warn" });
 }
@@ -52,6 +56,7 @@ function clear(id = defaultId) {
 export const portalService = {
     onPortal,
     normal,
+    success,
     warn,
     error,
     // info,
@@ -87,6 +92,12 @@ const PortalBase = (props, { id, fade = true }) => {
                 return (
                     <BasicContainer theme={portal.basicContainer}>
                         <CancelOutlinedIcon style={portal.errorCrossOutlineIcon} />
+                    </BasicContainer>
+                )
+            case "success":
+                return (
+                    <BasicContainer theme={portal.basicContainer}>
+                        <CheckCircleOutlineIcon style={portal.successCrossOutlineIcon} />
                     </BasicContainer>
                 )
             default:

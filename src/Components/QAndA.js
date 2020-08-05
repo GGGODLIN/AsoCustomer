@@ -5,7 +5,7 @@ import { Text } from './Texts';
 import { ReactComponent as Down } from '../Assets/img/down.svg'
 
 const QAndABase = (props) => {
-    console.log(props.active)
+    //console.log(props.active)
     return (
         <>
             <BasicContainer className={props.className} onClick={() => { props?.onClick && props.onClick() }}>

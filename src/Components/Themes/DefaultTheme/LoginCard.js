@@ -38,6 +38,20 @@ export default {
             margin: "2rem 0 0 2.1rem",
             hoverBackgroundColor: "#6d3f00",
         },
+        signUpButton: {
+            backgroundColor: "#964f19",
+            color: "#fff",
+            borderRadius: "4px",
+            textAlign: "center",
+            fontSize: "14px",
+            cursor: "pointer",
+            fontWeight: 400,
+            width: "140px",
+            height: "40px",
+            lineHeight: "40px",
+            margin: "0.5rem 0 0 2.1rem",
+            hoverBackgroundColor: "#6d3f00",
+        },
         forgetText: {
             height: "14px",
             fontSize: ".75em",
@@ -80,6 +94,15 @@ export default {
             color: "#595959",
             fontSize: "2rem",
             fontWeight: 900
-        }
+        },
+        birthFormCardSelector: {
+            selectSubContainer: {
+                occupy: 4,
+                padding: "0 0.1rem 0 0.2rem"
+            },
+            selectBasicContainer: {
+                width: "95%",
+            }
+        },
     }
 }

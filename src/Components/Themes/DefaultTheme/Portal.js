@@ -26,5 +26,12 @@ export default {
             width: "6.5rem",
             color: "#f27474"
         },
+        successCrossOutlineIcon: {
+            position: "relative",
+            top: "-1.5rem",
+            height: "9.375rem",
+            width: "6.5rem",
+            color: "#26b49a"
+        },
     }
 }
