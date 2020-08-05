@@ -10,6 +10,7 @@ import { setItemlocalStorage, getItemlocalStorage, clearlocalStorage } from '../
 import { useLoginAsync } from '../SelfHooks/useAsync';
 import { portalService } from './Portal'
 import { YearFrom1930to, getDayByYearAndMonth, month } from '../Mappings/Mappings';
+import { useHistory } from 'react-router-dom';
 
 //#region 表單卡片基底
 const LoginCardBase = (props) => {
@@ -17,6 +18,7 @@ const LoginCardBase = (props) => {
     const { APIUrl, Theme, Switch } = useContext(Context);
     const { loginCard } = Theme;
     const [IsLogin, setIsLogin] = useState("");
+    let history = useHistory();
 
 
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
@@ -43,17 +45,17 @@ const LoginCardBase = (props) => {
             .then((PreResult) => {
                 if (PreResult.success) {
                     //setItemlocalStorage("Auth", PreResult.token);
-                    portalService.success({
-                        autoClose: false,
-                        removeYesButton: true,
-                        removeNoButton: true,
-                        content: (
-                            <>
-                                <Text theme={loginCard.exportText}>
-                                    登入成功
-                                </Text>
-                            </>)
-                    })
+                    // portalService.success({
+                    //     autoClose: false,
+                    //     removeYesButton: true,
+                    //     removeNoButton: true,
+                    //     content: (
+                    //         <>
+                    //             <Text theme={loginCard.exportText}>
+                    //                 登入成功
+                    //             </Text>
+                    //         </>)
+                    // })
                 } else {
                     //console.log(PreResult)
                     if (PreResult?.msg) {
@@ -104,6 +106,7 @@ const LoginCardBase = (props) => {
             })
             .finally(() => {
                 props?.close && props.close()
+                history.push('/Profile');
                 Switch();//觸發LS路由重新更新
             });
 
