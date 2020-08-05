@@ -249,7 +249,7 @@ const LoginCardBase = (props) => {
                                 </FormControl>
 
                                 <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", margin: "2rem 0 0 2.1rem", cursor: "pointer" }}>
-                                    <CheckboxWhatever checked={Agreement} ></CheckboxWhatever>
+                                    <CheckboxWhatever checked={Agreement} onChange={() => { /* 不需要做事，用上面的onClick控制 */ }}></CheckboxWhatever>
                                     我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
                                 </Text>
                                 <EasyButton theme={loginCard.signUpButton} text={"註冊"} onClick={() => { console.log("...做註冊要做的事") }} />
