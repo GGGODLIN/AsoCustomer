@@ -1,6 +1,6 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
-import { BasicContainer, SubContainer, Container } from '../../../Components/Containers';
+import { BasicContainer, SubContainer, Container, ContainerScale } from '../../../Components/Containers';
 import { useHistory } from 'react-router-dom';
 import { useWindowSize } from '../../../SelfHooks/useWindowSize'
 import { ReactComponent as LogoDone } from '../../../Assets/img/done.svg'
@@ -27,7 +27,7 @@ export const Home = (props) => {
         <>
             {/* 寬度大於等於768時渲染的組件 */}
             {width > 768 && <BasicContainer theme={home.basicContainer}>
-                <Container theme={{ height: '100vh' }}>
+                <Container theme={{ height: '100vh', overflowX: 'hidden', }}>
                     <img src={'/b9965e9.jpg'} alt="Background" height='100%' />
                     <Container theme={{ position: 'absolute', left: '50%', top: '40%', direction: 'column', }}>
                         <Text
@@ -169,6 +169,115 @@ export const Home = (props) => {
                         <img src="/cal.png" width='100%' />
                     </div>
                 </Container>
+                <Container theme={{ backgroundColor: '#f2f6f9', height: '544px', alignItems: 'center', justify: 'center', direction: 'column' }}>
+                    <Text
+                        style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#444",
+                            fontSize: "40px",
+                            fontWeight: "900",
+                            lineHeight: '47px',
+                            display: 'block',
+
+                        }}>專業檢測流程</Text>
+                    <Text
+                        //style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#555",
+                            fontSize: "18px",
+                            fontWeight: "500",
+                            lineHeight: '24px',
+                            display: 'block',
+                            margin: '16px 0 0 0'
+                        }}>與工研院專利技術合作</Text>
+                    <Text
+                        //style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#555",
+                            fontSize: "18px",
+                            fontWeight: "500",
+                            lineHeight: '24px',
+                            display: 'block',
+
+                        }}>聘請專業物理治療師提供數據分析與建議</Text>
+                    <Container theme={{ alignItems: 'center', justify: 'center', }}>
+                        <ContainerScale theme={{ transition: 'all .3s', margin: '64px 110px 0 0', }}>
+                            <img src="/17d0ecd.png" height='180px' alt="Background" />
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '100px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`量測足三圍`}
+                            </Text>
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '126px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`總足長/內中足長/足寬`}
+                            </Text>
+                        </ContainerScale>
+                        <ContainerScale theme={{ transition: 'all .3s', margin: '64px 110px 0 0', }}>
+                            <img src="/9da42c4.png" height='180px' alt="Background" />
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '100px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`穿上檢測專用鞋具`}
+                            </Text>
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '126px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`依量測師指示行走12公尺`}
+                            </Text>
+                        </ContainerScale>
+                        <ContainerScale theme={{ transition: 'all .3s', margin: '64px 0px 0 0', }}>
+                            <img src="/881b261.png" height='180px' alt="Background" />
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '100px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`獨家APP演算法`}
+                            </Text>
+                            <Text
+                                style={{ whiteSpace: 'nowrap', textShadow: '0 0 1px #444' }}
+                                theme={{
+                                    position: 'absolute', margin: '126px 0 0 38px', color: "#444",
+                                    fontSize: "20px",
+                                    fontWeight: "500",
+                                    lineHeight: '26px',
+
+                                }}>
+                                {`5秒內完成分析判讀`}
+                            </Text>
+                        </ContainerScale>
+                    </Container>
+                </Container>
 
                 <EasyButton
                     text={"預約足測"}
@@ -187,6 +296,110 @@ export const Home = (props) => {
                         margin: "auto auto 12px",
                         hoverBackgroundColor: "#6d3f00",
                     }}></EasyButton>
+                <Container theme={{ height: '611px', alignItems: 'center', justify: 'center', direction: 'column' }}>
+                    <Text
+                        style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#444",
+                            fontSize: "40px",
+                            fontWeight: "900",
+                            lineHeight: '47px',
+                            display: 'block',
+
+                        }}>輕鬆四步驟 · 健康有掌握</Text>
+                    <Text
+                        //style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#555",
+                            fontSize: "18px",
+                            fontWeight: "500",
+                            lineHeight: '24px',
+                            display: 'block',
+                            margin: '16px 0 0 0'
+                        }}>立即預約動態足壓量測，深入分析4大足部健康指標，打造個人專屬足部保養對策。</Text>
+                    <Text
+                        //style={{ textShadow: '0 0 1px #444' }}
+                        theme={{
+                            color: "#555",
+                            fontSize: "18px",
+                            fontWeight: "500",
+                            lineHeight: '24px',
+                            display: 'block',
+
+                        }}>各門市開放每日十位預約體驗名額，可免費享有動態足壓量測</Text>
+                    <Container theme={{ alignItems: 'center', }}>
+                        <div style={{ margin: '0 5% 0 10%', width: '12.5%' }}>
+                            <img src="/3078658.png" width='100%' alt="Background" />
+                        </div>
+                        <div style={{ margin: '0 5% 0 5%', width: '12.5%' }}>
+                            <img src="/3078658.png" width='100%' alt="Background" />
+                        </div>
+                        <div style={{ margin: '0 5% 0 5%', width: '12.5%' }}>
+                            <img src="/3078658.png" width='100%' alt="Background" />
+                        </div>
+                        <div style={{ margin: '0 10% 0 5%', width: '12.5%' }}>
+                            <img src="/3078658.png" width='100%' alt="Background" />
+                        </div>
+                    </Container>
+                    <Container theme={{ alignItems: 'center' }}>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 0 0 10%',
+                                width: '12.5%'
+                            }}>預約</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                //margin: '0 5% 0 10%',
+                                width: '10%',
+                                borderBottom: '1px solid red',
+                            }}> </Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 5% 0 0',
+                                width: '12.5%'
+                            }}>預約</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 5% 0 5%',
+                                width: '12.5%'
+                            }}>預約</Text>
+                        <Text
+                            //style={{ textShadow: '0 0 1px #444' }}
+                            theme={{
+                                color: "#49589b",
+                                fontSize: "28px",
+                                fontWeight: "700",
+                                lineHeight: '24px',
+                                textAlign: 'center',
+                                margin: '0 10% 0 5%',
+                                width: '12.5%'
+                            }}>預約</Text>
+                    </Container>
+                </Container>
                 <div style={{ height: "1000rem" }}>
                     sdfsdf
                 </div>
