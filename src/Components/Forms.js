@@ -428,7 +428,7 @@ const FormCardSelectorBase = (props) => {
                 className={props.className} >
                 {/* 輸入框 */}
                 <BasicContainer>
-                    <Text theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel(props)} >
+                    <Text style={{ textShadow: `0 0 1px ${props.label === "" ? "transparent" : "#444"}` }} theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel(props)} >
                         {props.label === "" ? "0" : props.label}
                     </Text>
                 </BasicContainer>
@@ -1151,3 +1151,66 @@ export const SearchSelector = styled(SearchSelectorBase).attrs((props) => ({}))`
 
 //#endregion
 
+//#region 隨便封一個 勾選欄
+export const CheckboxWhatever = styled.input.attrs((props) => ({ type: "checkbox" }))`
+
+  && {
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 12px;
+    height: 12px;
+    position: relative;
+  }
+
+  &&:before {
+    position: absolute;
+    z-index: 2;
+    width: 4px;
+    height: 10px;
+    content: " ";
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+
+  }
+  
+  &&:checked:before {
+    color: #000;
+    content: "✓";
+    top: -8px;
+    left: 2px;
+    font-weight: 900;
+    font-size: 16px;
+  }
+
+  &&:after {
+    position: absolute;
+    width: 4px;
+    height: 10px;
+    top: 0;
+    content: " ";
+    background-color: #fff;
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+    padding: 0px 3px;
+    border-radius: 3px;
+    border: 1px solid #000;
+  }
+  
+  &&:checked:after {
+    background-color: #fff;
+    border: 1px solid #000;
+    color: #000;
+    content: " ";
+    font-size: 12px;
+  }
+
+  &&:hover:after {
+    background-color: #cccccc;
+  }
+
+`
+
+//#endregion

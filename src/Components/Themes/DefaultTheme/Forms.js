@@ -110,19 +110,20 @@ export default {
                     height: props?.isMulti ? "initial" : "2rem",
                     minHeight: props?.isMulti ? "2rem" : "2rem",
                     lineHeight: props?.isMulti ? "initial" : "2rem",
-                    boxShadow: state.isFocused ? "0 0 0 2px #444" : "none",
+                    boxShadow: state.isFocused ? "none" : "none",
                     border: "0px solid #00000000",
-                    borderBottom: !state.isFocused ? "#444444 1px solid" : "none",
-                    borderRadius: state.isFocused ? "4px" : "0rem",
+                    borderBottom: !state.isFocused ? "#444444 1px solid" : "#d25959 1px solid",
+                    borderRadius: state.isFocused ? "0px" : "0rem",
                     '&:focus': {
                         border: "0px solid #00000000",
-                        borderBottom: !state.isFocused ? "#444444 1px solid" : "none",
-                        borderRadius: state.isFocused ? "4px" : "0rem",
+                        borderBottom: !state.isFocused ? "#444444 1px solid" : "#d25959 1px solid",
+                        //borderRadius: state.isFocused ? "4px" : "0rem",
+                        //#d25959 1px solid
                     },
                     '&:hover': {
                         border: "0px solid #00000000",
-                        borderBottom: !state.isFocused ? "#444444 1px solid" : "none",
-                        borderRadius: state.isFocused ? "4px" : "0rem",
+                        borderBottom: !state.isFocused ? "#444444 1px solid" : "#d25959 1px solid",
+                        //borderRadius: state.isFocused ? "4px" : "0rem",
                     }
                 }),
                 indicatorSeparator: () => ({
