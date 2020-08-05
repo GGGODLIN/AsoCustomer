@@ -31,9 +31,9 @@ export const Faq = (props) => {
                     }} />
 
                 {/* 標題 (如果要調左右空白，自己加一個容器調Padding)*/}
-                <Container theme={{ margin: '0 0 40px 0' }}>
+                <BasicContainer theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                     足部健康相關
                     </Text>
@@ -63,10 +63,10 @@ export const Faq = (props) => {
                         content={"步態內偏的人，足弓過度內旋，容易出現骨盆前頃，特徵有小腹過凸，腰椎前凸幅度過大，患者剛開始沒有立即症狀，漸漸會出現腰痠，走路耐力變差，下肢關節會慢慢出現症狀，甚至會有慢性腰痛的現象；外偏的步態，特徵是腳的剛性強，足弓無法像彈簧一樣壓縮，緩衝撞擊力道的能力較差，承受外界撞擊力變重。無論哪種異常步態，最後都可能引發關節提早退化，引發各種慢性疼痛的困擾，嚴重時甚至會危害身體健康。"}
                         active={WhichOpen === "錯誤的步態會對身體造成什麼影響？"}
                         onClick={() => { setWhichOpen("錯誤的步態會對身體造成什麼影響？") }}></QAndA>
-                </Container>
-                <Container theme={{ margin: '0 0 40px 0' }}>
+                </BasicContainer>
+                <BasicContainer theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                             足測服務相關
                     </Text>
@@ -81,10 +81,10 @@ export const Faq = (props) => {
                         content={"阿瘦集團的動態足壓量測可以忠實紀錄腳在鞋子中的走動行為，並根據數據分析，了解自己真實的步態類型及足部狀況。整體流程約15分鐘，民眾先量腳型並依照穿鞋習慣、選擇適當測量鞋，在6公尺的步道來回行走，透過鞋中偵測器將收集的數據，上傳雲端進行分析，並給予「個人化」的鞋具或是步態調整的建議。"}
                         active={WhichOpen === "什麼動態足壓量測？"}
                         onClick={() => { setWhichOpen("什麼動態足壓量測？") }}></QAndA>
-                </Container>
-                <Container theme={{ margin: '0 0 40px 0' }}>
+                </BasicContainer>
+                <BasicContainer theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                             超正步鞋墊相關
                     </Text>
@@ -104,7 +104,7 @@ export const Faq = (props) => {
                         content={"與物理治療師團隊合作研發的超正步鞋墊，可依據自己的步態狀況調整、對應痛點，組合出最適合您足部狀況的鞋墊。建議在購買鞋墊前，先前往各門市進行免費的動態足壓量測，以科學化測量出自己的真實步態，才能掌握足部的健康狀況喔。"}
                         active={WhichOpen === "請問配戴鞋墊一定要先經過測量嗎？"}
                         onClick={() => { setWhichOpen("請問配戴鞋墊一定要先經過測量嗎？") }}></QAndA>
-                </Container>
+                </BasicContainer>
             </BasicContainer>
             }
 
@@ -115,7 +115,7 @@ export const Faq = (props) => {
                 {/* 標題 (如果要調左右空白，自己加一個容器調Padding)*/}
                 <Container theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                     足部健康相關
                     </Text>
@@ -148,7 +148,7 @@ export const Faq = (props) => {
                 </Container>
                 <Container theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                             足測服務相關
                     </Text>
@@ -166,7 +166,7 @@ export const Faq = (props) => {
                 </Container>
                 <Container theme={{ margin: '0 0 40px 0' }}>
                     <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
-                        <Text style={{ textShadow: "0px 0px 1px #964f19" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
+                        <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                             超正步鞋墊相關
                     </Text>
