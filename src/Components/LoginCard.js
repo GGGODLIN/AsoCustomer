@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom';
 //#region 表單卡片基底
 const LoginCardBase = (props) => {
 
-    const { LoginData, setLoginData, APIUrl, Theme, Switch } = useContext(Context);
+    const { APIUrl, Theme, Switch } = useContext(Context);
     const { loginCard } = Theme;
     const [IsLogin, setIsLogin] = useState("");
     let history = useHistory();
@@ -44,8 +44,7 @@ const LoginCardBase = (props) => {
             })
             .then((PreResult) => {
                 if (PreResult.success) {
-                    setLoginData(PreResult);
-                    //setItemlocalStorage("Auth", PreResult.token);
+                    setItemlocalStorage("LoginData", JSON.stringify(PreResult));
                     // portalService.success({
                     //     autoClose: false,
                     //     removeYesButton: true,

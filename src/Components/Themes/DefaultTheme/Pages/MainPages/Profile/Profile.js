@@ -26,11 +26,61 @@ export default {
             scrollHeight: ".8rem",
         }
     },
+    DataContainer: {
+        margin: '0 0 24px 0',
+    },
     textSmallTitle: {
         color: "#999999",
         fontSize: "14px",
         fontWeight: "700",
         lineHeight: '28px',
         display: 'block',
-    }
+    },
+    textContent: {
+        color: "#444",
+        fontSize: "16px",
+        fontWeight: "500",
+        lineHeight: '28px',
+        display: 'block',
+        //margin: '0 0 24px 0'
+    },
+    textContentPwd: {
+        color: "#444",
+        fontSize: "16px",
+        fontWeight: "900",
+        lineHeight: '28px',
+        display: 'block',
+        //margin: '0 0 24px 0',
+        letterSpacing: "0.5rem"
+    },
+    passFormCardTextInput: (len) => {
+        if (len > 0) {
+            return {
+                input: {
+                    height: "2rem",
+                    lineHeight: "2rem",
+                    fontSize: "0.75rem",
+                    borderBottom: "#444444 1px solid",
+                    borderRadius: "0rem",
+                    letterSpacing: "0.5rem"
+                },
+                inputSubContainer: {
+                    occupy: 12,
+                }
+            }
+        } else {
+            return {
+                input: {
+                    height: "2rem",
+                    lineHeight: "2rem",
+                    fontSize: "0.75rem",
+                    borderBottom: "#444444 1px solid",
+                    borderRadius: "0rem",
+                },
+                inputSubContainer: {
+                    occupy: 12,
+                }
+            }
+        }
+    },
 }

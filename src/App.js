@@ -24,11 +24,10 @@ function App() {
   const [APIUrl, setAPIUrl] = useState("http://aso.1966.org.tw:20020/");
   const [Value, Switch, Open, Close] = useSwitch();//控制重新渲染路由
   const [OpwnLoginCard, setOpwnLoginCard] = useState(false);
-  const [LoginData, setLoginData] = useState({});
 
   return (
     <>
-      < Context.Provider value={{ APIUrl, Theme, setTheme, Switch, OpwnLoginCard, setOpwnLoginCard, LoginData, setLoginData }}>
+      < Context.Provider value={{ APIUrl, Theme, setTheme, Switch, OpwnLoginCard, setOpwnLoginCard }}>
         <ContextContainer />
       </Context.Provider>
     </>
