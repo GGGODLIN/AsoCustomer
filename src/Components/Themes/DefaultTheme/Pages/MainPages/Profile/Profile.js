@@ -34,7 +34,11 @@ export default {
         fontSize: "14px",
         fontWeight: "700",
         lineHeight: '28px',
-        display: 'block',
+        display: 'inline-block',
+        cursor: "default",
+        tablet: {
+            display: 'inline-block',
+        }
     },
     textContent: {
         color: "#444",
@@ -52,6 +56,21 @@ export default {
         display: 'block',
         //margin: '0 0 24px 0',
         letterSpacing: "0.5rem"
+    },
+    textInput: {
+        input: {
+            height: "2rem",
+            lineHeight: "2rem",
+            fontSize: "0.75rem",
+            borderBottom: "#444444 1px solid",
+            borderRadius: "0rem",
+            focusBorderBottom: "#d25959 1px solid",
+            focusFontSize: "1rem"
+        },
+        inputSubContainer: {
+            occupy: 6,
+            padding: "0 0.1rem 0 0.2rem"
+        }
     },
     passFormCardTextInput: (len) => {
         if (len > 0) {

@@ -139,7 +139,7 @@ export const Profile = (props) => {
         EmailResetValue(UserData?.response?.cEmail ?? '');
         NameResetValue(UserData?.response?.cRealName ?? '');
         PhoneResetValue(UserData?.response?.cTel ?? '');
-        PassResetValue();
+        PassResetValue("");
     };
 
     useEffect(() => {
@@ -213,8 +213,29 @@ export const Profile = (props) => {
                                 }} />
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
-                            <Text theme={profile.textSmallTitle} >登入密碼</Text>
-                            <Text theme={profile.textContentPwd}>{`·  ·  ·  ·  ·  ·`}</Text>
+                            <Text theme={{ display: "block" }}>
+                                <Text onClick={() => { (DataEditing && setPassEditing(p => !p)) }} theme={{ ...profile.textSmallTitle, color: `${DataEditing ? "#964f19" : "#999999"}`, cursor: `${DataEditing ? "pointer" : "default"}` }} >
+                                    登入密碼
+                            </Text>
+                            </Text>
+                            {!PassEditing ? <Text theme={profile.textContentPwd}>{`·  ·  ·  ·  ·  ·`}</Text>
+                                : <FormCardTextInput
+                                    //label={"姓名"}
+                                    //hint={""}
+                                    pass
+                                    value={Pass}
+                                    onChange={Passhandler}
+                                    regExpResult={PassregExpResult}
+                                    placeholder={""}
+                                    theme={{
+                                        ...profile.textInput,
+                                        input: {
+                                            ...profile.textInput.input,
+                                            ...(Pass.length > 0 ? { letterSpacing: "0.5rem" } : {})
+                                        }
+                                    }}
+                                ></FormCardTextInput>}
+
                             {DataEditing && !PassEditing && < EasyButton theme={{
                                 backgroundColor: "#fff",
                                 display: "inline-block",
@@ -228,16 +249,18 @@ export const Profile = (props) => {
                                 textAlign: "center",
                                 //hoverColor: DataEditing ? 'rgb(38, 180, 154)' : "#666",
                                 fontSize: "0.875rem",
-                                cursor: "pointer",
                             }}
-                                icon={<CreateIcon style={{
-                                    position: "relative",
-                                    top: "0.1rem",
-                                    height: "1rem",
-                                    color: "#444",
-                                }} />}
-                                text={DataEditing ? '確認修改' : "編輯資料"}
-                                onClick={() => { setPassEditing(!PassEditing) }} />}
+                                icon={<CreateIcon
+                                    onClick={() => { setPassEditing(!PassEditing) }}
+                                    style={{
+                                        position: "relative",
+                                        top: "0.1rem",
+                                        height: "1rem",
+                                        color: "#444",
+                                        cursor: "pointer",
+                                    }} />}
+                                text={DataEditing ? '' : ""}
+                            />}
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
                             <Text theme={profile.textSmallTitle} >姓名</Text>
@@ -249,7 +272,7 @@ export const Profile = (props) => {
                                     onChange={Namehandler}
                                     regExpResult={NameregExpResult}
                                     placeholder={"請輸入中文姓名"}
-                                    theme={profile.passFormCardTextInput(0)}
+                                    theme={profile.textInput}
                                 ></FormCardTextInput>}
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
@@ -262,7 +285,7 @@ export const Profile = (props) => {
                                     onChange={Emailhandler}
                                     regExpResult={EmailregExpResult}
                                     placeholder={"abe_wang@gmail.com"}
-                                    theme={profile.passFormCardTextInput(0)}
+                                    theme={profile.textInput}
                                 ></FormCardTextInput>}
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
@@ -275,7 +298,7 @@ export const Profile = (props) => {
                                     onChange={Phonehandler}
                                     regExpResult={PhoneregExpResult}
                                     placeholder={"請輸入手機號碼"}
-                                    theme={profile.passFormCardTextInput(0)}
+                                    theme={profile.textInput}
                                 ></FormCardTextInput>}
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
