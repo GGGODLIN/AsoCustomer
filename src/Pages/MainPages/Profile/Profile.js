@@ -76,7 +76,7 @@ export const Profile = (props) => {
                     history.push("/");
                     setOpwnLoginCard(true);
                 } else {
-                    history.push("/");
+                    history.push("/Login");
                 }
 
                 throw Error;
@@ -1005,7 +1005,7 @@ export const Profile = (props) => {
                             display: "inline-block",
                             position: 'absolute',
                             top: '0',
-                            left: '80px',
+                            left: '120px',
                             width: "8rem",
                             height: "2rem",
                             lineHeight: "2rem",
@@ -1071,9 +1071,9 @@ export const Profile = (props) => {
                                 regExpResult={PassregExpResult}
                                 placeholder={""}
                                 theme={{
-                                    ...profile.textInput,
+                                    ...profile.textInputLessThan768,
                                     input: {
-                                        ...profile.textInput.input,
+                                        ...profile.textInputLessThan768.input,
                                         ...(Pass.length > 0 ? { letterSpacing: "0.5rem" } : {})
                                     }
                                 }}
@@ -1084,7 +1084,7 @@ export const Profile = (props) => {
                             display: "inline-block",
                             position: 'absolute',
                             top: '0',
-                            left: '80px',
+                            left: '120px',
                             width: "8rem",
                             height: "2rem",
                             lineHeight: "2rem",
@@ -1115,7 +1115,7 @@ export const Profile = (props) => {
                                 onChange={Namehandler}
                                 regExpResult={NameregExpResult}
                                 placeholder={"請輸入中文姓名"}
-                                theme={profile.textInput}
+                                theme={profile.textInputLessThan768}
                             ></FormCardTextInput>}
                     </BasicContainer>
                     <BasicContainer theme={profile.DataContainer}>
@@ -1128,7 +1128,7 @@ export const Profile = (props) => {
                                 onChange={Emailhandler}
                                 regExpResult={EmailregExpResult}
                                 placeholder={"abe_wang@gmail.com"}
-                                theme={profile.textInput}
+                                theme={profile.textInputLessThan768}
                             ></FormCardTextInput>}
                     </BasicContainer>
                     <BasicContainer theme={profile.DataContainer}>
@@ -1141,7 +1141,7 @@ export const Profile = (props) => {
                                 onChange={Phonehandler}
                                 regExpResult={PhoneregExpResult}
                                 placeholder={"請輸入手機號碼"}
-                                theme={profile.textInput}
+                                theme={profile.textInputLessThan768}
                             ></FormCardTextInput>}
                     </BasicContainer>
                     <BasicContainer theme={profile.DataContainer}>

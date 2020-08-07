@@ -3,7 +3,7 @@ export default {
         height: "calc( 100% - 4.5rem - 36px )",
         //backgroundColor: "#f7f1ed",
         width: "100%",
-        padding: '0 5% 5% 5%',
+        padding: '0 3% 10% 3%',
         position: "fixed",
         top: "calc( 4.5rem + 36px )",
         bottom: 0,
@@ -37,12 +37,14 @@ export default {
         display: 'inline-block',
         cursor: "default",
         textAlign: 'center',
+        width: '100%',
         tablet: {
             color: "#999999",
             fontSize: "14px",
             fontWeight: "700",
             lineHeight: '28px',
             display: 'inline-block',
+            width: 'auto',
             cursor: "default",
         }
     },
@@ -75,8 +77,24 @@ export default {
         },
         inputSubContainer: {
             occupy: 6,
-            padding: "0 0.1rem 0 0.2rem"
-        }
+            padding: "0 0.1rem 0 0.2rem",
+        },
+
+    },
+    textInputLessThan768: {
+        input: {
+            height: "2rem",
+            lineHeight: "2rem",
+            fontSize: "0.75rem",
+            borderBottom: "#444444 1px solid",
+            borderRadius: "0rem",
+            focusBorderBottom: "#d25959 1px solid",
+            focusFontSize: "1rem"
+        },
+        inputSubContainer: {
+            occupy: 12,
+            padding: "0 0.1rem 0 0.2rem",
+        },
     },
     passFormCardTextInput: (len) => {
         if (len > 0) {
@@ -125,7 +143,7 @@ export default {
         hoverColor: "#fff",
         fontSize: "0.875rem",
         cursor: "pointer",
-        margin: '4rem 1rem 0 0',
+        margin: '6rem 1rem 0 0',
         tablet: {
             backgroundColor: "#fff",
             display: "inline-block",
