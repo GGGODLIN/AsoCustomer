@@ -419,23 +419,33 @@ export const History = (props) => {
 
 
                                             <Text theme={{
-                                                display: 'inline-block',
-                                                width: '50%',
+                                                display: 'block',
+                                                //width: '50%',
                                                 //margin: "0 0 0.375rem 0",
                                                 color: "#444",
-                                                fontSize: "22px",
+                                                fontSize: '1.125rem',
                                                 fontWeight: "900"
                                             }}>{rowItem?.ShopName}</Text>
-
                                             <Text theme={{
-                                                display: 'inline-block',
-                                                width: '50%',
-                                                margin: "0 0 0.375rem 0",
-                                                color: "#999",
-                                                fontSize: "16px",
-                                                fontWeight: "500",
-                                                height: "0.875rem"
-                                            }}>{'預約日期'}</Text>
+                                                display: 'block',
+                                                //width: '50%',
+                                                //margin: "0 0 0.375rem 0",
+                                                color: "#444",
+                                                fontSize: "0.875rem",
+                                                fontWeight: "400",
+                                                margin: '0 0 8px 0'
+                                            }}>{rowItem?.ShopAddr}</Text>
+                                            <Text
+
+                                                theme={{
+                                                    display: 'block',
+                                                    //width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#964f19",
+                                                    fontSize: "0.875rem",
+                                                    fontWeight: "400"
+                                                }}>{rowItem?.ShopTel}</Text>
+
 
 
 
@@ -444,31 +454,7 @@ export const History = (props) => {
                                         </>)),
                                     renderContent: (item, id, rowItem) => ((item &&
                                         <>
-                                            <Text theme={{
-                                                display: 'inline-block',
-                                                width: '50%',
-                                                //margin: "0 0 0.375rem 0",
-                                                color: "#444",
-                                                fontSize: "1.125rem",
-                                                fontWeight: "400"
-                                            }}>{rowItem?.ShopAddr}</Text>
-                                            <Text style={{
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                WebkitLineClamp: 1,
-                                                WebkitBoxOrient: "vertical",
-                                                //padding: '0 5rem 0 0',
-                                                whiteSpace: 'nowarp',
-                                                //display: 'inline-box',
-                                            }}
-                                                theme={{
-                                                    display: "-webkit-inline-box",
-                                                    width: '50%',
-                                                    //margin: "0 0 0.375rem 0",
-                                                    color: "#444",
-                                                    fontSize: "1.125rem",
-                                                    fontWeight: "900"
-                                                }}>{`${rowItem?.ReservationDate?.split("T")?.[0]} ${rowItem?.ReservationDate?.split("T")?.[1]}`}</Text>
+
 
 
 
@@ -482,7 +468,15 @@ export const History = (props) => {
                                     //width: "20%",
                                     renderTitle: (item, id, rowItem) => ((item &&
                                         <>
-
+                                            <Text theme={{
+                                                display: 'block',
+                                                //width: '50%',
+                                                margin: "0 0 0.375rem 0",
+                                                color: "#999",
+                                                fontSize: "0.75rem",
+                                                fontWeight: "500",
+                                                height: "0.875rem"
+                                            }}>{'預約日期'}</Text>
                                             <Text style={{
                                                 overflow: "hidden",
                                                 textOverflow: "ellipsis",
@@ -490,59 +484,34 @@ export const History = (props) => {
                                                 WebkitBoxOrient: "vertical",
                                                 //padding: '0 5rem 0 0',
                                                 whiteSpace: 'nowarp',
-                                                display: 'inline-box',
+                                                //display: 'inline-box',
                                             }}
                                                 theme={{
-                                                    display: "-webkit-inline-box",
-                                                    width: '50%',
-                                                    margin: "0 0 0.375rem 0",
-                                                    color: "#fff",
-                                                    fontSize: "0.875rem",
-                                                    fontWeight: "500",
-                                                    height: "1.25rem"
-                                                }}>{'預約編號'}</Text>
-
-                                            <Text style={{
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                WebkitLineClamp: 1,
-                                                WebkitBoxOrient: "vertical",
-                                                //padding: '0 5rem 0 0',
-                                                whiteSpace: 'nowarp',
-                                                display: 'inline-box',
-                                            }}
+                                                    display: "block",
+                                                    //width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
+                                                    color: "#444",
+                                                    fontSize: "1rem",
+                                                    fontWeight: "900"
+                                                }}>{`${rowItem?.ReservationDate?.split("T")?.[0]} ${rowItem?.ReservationDate?.split("T")?.[1]}`}</Text>
+                                            <Text
                                                 theme={{
-                                                    display: "-webkit-inline-box",
-                                                    width: '50%',
-                                                    margin: "0 0 0.375rem 0",
+                                                    display: "block",
+                                                    //width: '50%',
+                                                    //margin: "0 0 0.375rem 0",
                                                     color: "#999",
-                                                    fontSize: "0.875rem",
+                                                    fontSize: "0.75rem",
                                                     fontWeight: "500",
                                                     height: "1.25rem"
                                                 }}>{'預約編號'}</Text>
+
+
 
 
                                         </>)),
                                     renderContent: (item, id, rowItem) => ((item &&
                                         <>
-                                            <Text
-                                                style={{
-                                                    overflow: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    //WebkitLineClamp: 0,
-                                                    //WebkitBoxOrient: "vertical",
-                                                    //padding: '0 5rem 0 0',
-                                                    whiteSpace: 'nowarp',
-                                                    display: 'inline-box',
-                                                }}
-                                                theme={{
-                                                    display: 'inline-block',
-                                                    width: '50%',
-                                                    //margin: "0 0 0.375rem 0",
-                                                    color: "#964f19",
-                                                    fontSize: "1.125rem",
-                                                    fontWeight: "400"
-                                                }}>{rowItem?.ShopTel}</Text>
+
                                             <Text style={{
                                                 overflow: "hidden",
                                                 textOverflow: "ellipsis",
@@ -553,12 +522,13 @@ export const History = (props) => {
                                                 display: 'inline-box',
                                             }}
                                                 theme={{
-                                                    display: 'inline-block',
-                                                    width: '50%',
+                                                    display: 'block',
+                                                    //width: '50%',
                                                     //margin: "0 0 0.375rem 0",
                                                     color: "#444",
-                                                    fontSize: "1.125rem",
-                                                    fontWeight: "400"
+                                                    fontSize: "1rem",
+                                                    fontWeight: "900",
+                                                    margin: '0 0 -20px 0'
                                                 }}>{item}</Text>
 
 
@@ -568,62 +538,7 @@ export const History = (props) => {
 
                                         </>))
                                 },
-                                "controll": {
-                                    width: "40%",
-                                    rowContainer: {
-                                        position: "absolute",
-                                        top: "0.875rem",
-                                        right: "0.2rem"
-                                    },
-                                    renderTitle: (item, id) => ((item && null)),
-                                    renderContent: (item, id, rowItem) => {
-                                        return (
-                                            <BasicContainer theme={{
-                                                textAlign: "right",
-                                            }}>
-                                                {[
-                                                    <Text
-                                                        key={`${item}1`}
-                                                        theme={{
-                                                            display: 'block',
-                                                            //width: '35%',
-                                                            margin: "0 1rem 0 0",
-                                                            color: rowItem?.Status <= 1 ? "#e37f22" : rowItem?.Status === 2 ? "#d25959" : rowItem?.Status === 3 ? '#d25959' : rowItem?.Status === 4 ? '#d25959' : rowItem?.Status === 5 ? '#26b49a' : rowItem?.Status === 6 ? '#d25959' : '#d25959',
 
-                                                            fontSize: "1rem",
-                                                            fontWeight: "400",
-                                                            textAlign: "right",
-                                                        }}>{rowItem?.Status <= 1 ? '即將到來' : rowItem?.Status === 2 ? '客戶未到' : rowItem?.Status === 3 ? '已由顧客取消' : rowItem?.Status === 4 ? '已由系統取消' : rowItem?.Status === 5 ? '已完成' : rowItem?.Status === 6 ? '逾期未排班' : '狀態異常'}</Text>,
-                                                    <EasyButton
-                                                        key={`${item}2`}
-                                                        onClick={() => {
-
-                                                            let { ReservationDate, OrderNo, ShopName, CustomerName, MasterName, AllService, FootMeasureService, IsHelp, WhereKnow, WillingIntroduce, ServiceRemark } = rowItem;
-                                                            let resaveRowItem = { ReservationDate, OrderNo, ShopName, CustomerName, MasterName, AllService, FootMeasureService, IsHelp, WhereKnow, WillingIntroduce, ServiceRemark };
-
-                                                            rowItem?.Status <= 1 ?
-                                                                portalService.warn({
-                                                                    autoClose: false,
-                                                                    yes: () => { rowItem?.Status <= 1 ? executeCancelOrder(rowItem) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(resaveRowItem)}`) },
-                                                                    yesText: "是，取消預約",
-                                                                    noText: "否，繼續瀏覽",
-                                                                    content: (
-                                                                        <>
-                                                                            <Text theme={profile.exportText}>
-                                                                                {`確定取消${rowItem?.ReservationDate?.split('T')?.[0]}在${rowItem?.ShopName}的預約嗎`}
-                                                                            </Text>
-
-                                                                        </>)
-                                                                }) : history.push(`ReservationList/${rowItem?.Id}?data=${JSON.stringify(resaveRowItem)}`)
-                                                        }}
-                                                        theme={rowItem?.Status <= 1 ? profile.exportButton : (rowItem?.Status === 5 && rowItem?.AllService !== 0) ? profile.checkServiceButton : { display: 'none' }}
-                                                        text={rowItem?.Status <= 1 ? "取消預約" : '查看評論'}
-                                                    />
-                                                ]}
-                                            </BasicContainer>
-                                        )
-                                    }
-                                },
                             }}
                         />
                     </BasicContainer>
