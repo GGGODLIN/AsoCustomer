@@ -11,6 +11,7 @@ import { Reservation } from "../Pages/MainPages/Reservation/Reservation";
 import { Faq } from "../Pages/MainPages/Faq/Faq";
 import { Profile } from '../Pages/MainPages/Profile/Profile';
 import { History } from '../Pages/MainPages/History/History';
+import { Login } from '../Pages/MainPages/Login/Login';
 
 /* 
    Date   : 2020-06-17 15:28:31
@@ -22,6 +23,7 @@ export const navbarTitleMappingUnLogin = {
    "/Reservation": "預約足測",// 預約足測
    "/Profile": "會員專區", // 會員專區
    "/": "首頁",// 首頁
+   "/Login": "會員專區",// 移動端 登入畫面
    "/Faq": "常見問題",// 常見問題
    "/History": "預約紀錄",// 預約紀錄
    "/404": "錯誤頁面",
@@ -32,6 +34,7 @@ export const navbarTitleMappingLogin = {
    "/Reservation": "預約足測",// 預約足測
    "/Profile": "會員資料", // 會員資料
    "/": "首頁",// 首頁
+   "/Login": "會員專區",// 移動端 登入畫面
    "/Faq": "常見問題",// 常見問題
    "/History": "預約紀錄",// 預約紀錄
    "/404": "錯誤頁面",
@@ -43,6 +46,7 @@ export const urlMapping = {
    "/Reservation": <Reservation />,// 預約足測
    "/Faq": <Faq />,// 常見問題
    "/": <Home />,// 預約件數
+   "/Login": <Login />, // 移動端 登入畫面
    "/History": <History />,// 預約紀錄
    "/404": < Error404 />,
 };
