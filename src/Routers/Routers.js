@@ -124,6 +124,12 @@ export const Routers = (props) => {
                     }
                     }>
                 </Route>
+                <Route exact path={"/Login"}
+                    render={({ location }) => {
+                        return urlMapping["/Login"]
+                    }
+                    }>
+                </Route>
                 {/* 
                    Date   : 2020-07-08 19:00:47
                    Author : Arhua Ho

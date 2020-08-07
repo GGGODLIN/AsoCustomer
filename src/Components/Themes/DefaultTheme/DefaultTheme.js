@@ -5,6 +5,7 @@ import faq from './Pages/MainPages/Faq/Faq'
 import reservation from './Pages/MainPages/Reservation/Reservation'
 import profile from './Pages/MainPages/Profile/Profile'
 import history from './Pages/MainPages/History/History'
+import login from './Pages/MainPages/Login/Login'
 import error404 from './Pages/ErrorPages/Error404'
 import forms from "./Forms";
 import tags from "./Tags";
@@ -51,6 +52,9 @@ export default {
         },
         historyPage: {
             history,
+        },
+        loginPage: {
+            login,
         }
 
     },
