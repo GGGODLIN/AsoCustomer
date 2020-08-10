@@ -50,4 +50,30 @@ export default {
             padding: "0 0.1rem 0 0.2rem"
         }
     },
+    locationFormCardTextInput: {
+        selectSubContainer: {
+            occupy: 6,
+            //height: '2.25rem',
+            height: '36px',
+            padding: "0 0.1rem 0 0"
+        },
+        selectBasicContainer: {
+            margin: '4px 0 0 0',
+            height: '36px',
+        },
+        formCardSelectLabel: {
+            fontSize: '16px',
+            lineHeight: '22px',
+            margin: '0 0 4px 0'
+        },
+    },
+    okTimeSelector: {
+        selectSubContainer: {
+            occupy: 12,
+            padding: "0 0.1rem 0 0.2rem"
+        },
+        selectBasicContainer: {
+            width: "95%",
+        }
+    },
 }

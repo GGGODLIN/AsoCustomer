@@ -7,9 +7,11 @@ import { useWindowSize } from '../../../SelfHooks/useWindowSize'
 import GoogleMapReact from 'google-map-react';
 import HomeIcon from '@material-ui/icons/Home';
 import { useAsync } from '../../../SelfHooks/useAsync';
-import { FormControl, FormRow, FormCardTextInput, FormCardSelector, CheckboxWhatever } from '../../../Components/Forms';
-import { YearFrom1930to, Counties, cityAndCountiesLite, getDayByYearAndMonth, month } from '../../../Mappings/Mappings';
+import { FormControl, FormRow, FormCardTextInput, FormCardSelector, CheckboxWhatever, FormCardLeftIconSelector } from '../../../Components/Forms';
+import { YearFrom1930to, Counties, cityAndCountiesLite, getDayByYearAndMonth, month, hours } from '../../../Mappings/Mappings';
 import { useForm, useSelector } from '../../../SelfHooks/useForm';
+import { SingleDatePicker, SingleDatePicker2 } from '../../../Components/DatePicker';
+import { Text } from '../../../Components/Texts'
 
 export const Reservation = (props) => {
 
@@ -26,7 +28,10 @@ export const Reservation = (props) => {
     const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
     const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入詳細地址"]); // 地址欄位
     const [ShopChoosen, ShopChoosenhandler, ShopChoosenregExpResult, ShopChoosenResetValue] = useForm("", [], []); // 
-
+    const [DateRegion, DateRegionhandler, DateRegionregExpResult, DateRegionResetValue] = useForm('', [""], [""]);//日期區間欄位
+    const [Time, Timehandler, TimeregExpResult, TimeResetValue] = useSelector("", [], []);
+    const [OkTime, OkTimehandler, OkTimeregExpResult, OkTimeResetValue] = useSelector("", [], []);
+    console.log(OkTime);
     //#region 查詢列表API
     const getOrdersList = useCallback(async () => {
 
@@ -34,7 +39,7 @@ export const Reservation = (props) => {
             {
                 headers: {
                     'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                    //'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
             }
         )//查詢角色、表格翻頁
@@ -84,7 +89,7 @@ export const Reservation = (props) => {
             {
                 headers: {
                     'content-type': 'application/json',
-                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+                    //'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
                 },
             }
         )//查詢角色、表格翻頁
@@ -107,8 +112,9 @@ export const Reservation = (props) => {
                 }
 
                 if (PreResult.success) {
-                    //console.log(PreResult.response)
-                    setMasterData(PreResult);
+                    let data = PreResult.response.map((item) => { return { ...item, value: item?.mRealName, label: item?.mRealName } })
+                    //console.log(data)
+                    setMasterData(data);
                     return "查詢角色表格資訊成功"
                 } else {
                     throw new Error("查詢角色表格資訊失敗");
@@ -206,6 +212,117 @@ export const Reservation = (props) => {
         return [];
     }
 
+
+    const dayMapping = {
+        1: "MondayService",
+        2: "TuesdayService",
+        3: "WednesdayService",
+        4: "ThursdayService",
+        5: "FridayService",
+        6: "SaturdayService",
+        0: "SundayService",
+
+    }
+    const filterMaster = (array, order, date, timeSelect) => {
+        console.log(order, date, timeSelect)
+        if (order && date && timeSelect) {
+            let matchArea = order?.County + order?.District;
+            matchArea = matchArea.replace('台', '臺');
+            // let matchArea2 = order?.ShopAddr.slice(0, 5);//前五個字 ex台中市南區
+            // matchArea2 = matchArea2.replace('台', '臺');
+            let day = new Date(date).getDay();//星期幾
+            let time = timeSelect?.value;
+            //console.log(day);
+            let filterArray = array.filter((item) => { return fliterAreaFunc(item, matchArea, matchArea) });
+            console.log(filterArray);
+            let res = [];
+            filterArray.forEach((item, index) => {
+                let serviceTime = item?.[dayMapping[day]].split('-');
+                if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                    console.log(item?.[dayMapping[day]])
+                    res.push({ ...item, label: `足健師服務時間: ${item?.[dayMapping[day]]}` })
+                }
+            })
+            return res;
+            // let filterArray2 = filterArray.filter((item) => { return fliterTimeFunc(item, day, time) });
+
+
+            //console.log("filter", filterArray);
+            //return filterArray2;
+        }
+
+        return [];
+    }
+
+    const fliterAreaFunc = (item, matchArea, matchArea2) => {
+        //console.log("testTF", item, matchArea, matchArea2);
+        let serviceArray = item?.ServiceArea.split(',');
+        for (let i = 0; i < serviceArray.length; i++) {
+            if (serviceArray[i] === matchArea || serviceArray[i] === matchArea2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const fliterTimeFunc = (item, day, time) => {
+        //console.log(item, day, time)
+        if (day === 4) {
+            let serviceTime = item?.ThursdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.ThursdayService}` };
+            }
+            else
+                return false;
+        } else if (day === 5) {
+            let serviceTime = item?.FridayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.FridayService}` };
+            }
+            else
+                return false;
+        } else if (day === 6) {
+            let serviceTime = item?.SaturdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.SaturdayService}` };
+            }
+            else
+                return false;
+        } else if (day === 0) {
+            let serviceTime = item?.SundayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.SundayService}` };
+            }
+            else
+                return false;
+        } else if (day === 1) {
+            let serviceTime = item?.MondayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.MondayService}` };
+            }
+            else
+                return false;
+        } else if (day === 2) {
+            let serviceTime = item?.TuesdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.TuesdayService}` };
+            }
+            else
+                return false;
+        } else if (day === 3) {
+            let serviceTime = item?.WednesdayService.split('-');
+            if (time >= serviceTime[0] && time <= serviceTime[1]) {
+                return { ...item, label: `足健師服務時間: ${item?.WednesdayService}` };
+            }
+            else
+                return false;
+        }
+        else {
+            return false;
+        }
+
+    }
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
@@ -220,10 +337,10 @@ export const Reservation = (props) => {
                         }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
 
 
-
+                            <Text>請搜尋您欲前往的服務門市</Text>
                             <FormRow>
                                 <FormCardSelector
-                                    label={"通訊地址"}
+                                    //label={""}
                                     //hint={""}
                                     placeholder={"縣市"}
                                     value={County}
@@ -235,7 +352,7 @@ export const Reservation = (props) => {
                                     theme={reservation.birthFormCardSelector}
                                 ></FormCardSelector>
                                 <FormCardSelector
-                                    label={""}
+                                    //label={""}
                                     //hint={""}
                                     placeholder={"行政區"}
                                     value={District}
@@ -247,7 +364,7 @@ export const Reservation = (props) => {
                                     theme={reservation.birthFormCardSelector}
                                 ></FormCardSelector>
                                 <FormCardSelector
-                                    label={""}
+                                    //label={""}
                                     //hint={""}
                                     placeholder={"門市"}
                                     value={ShopChoosen}
@@ -257,6 +374,42 @@ export const Reservation = (props) => {
                                     onChange={(value) => { ShopChoosenResetValue(value) }}
                                     regExpResult={ShopChoosenregExpResult}
                                     theme={reservation.birthFormCardSelector}
+                                ></FormCardSelector>
+                            </FormRow>
+                            <FormRow>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <SingleDatePicker2
+                                        getDate={DateRegionResetValue}
+                                        value={DateRegion}// [startDate,endDate]
+                                    //doThings={(date) => { props.execute(dateTrans(date), dateTrans(date), SearchWord); }}
+                                    ></SingleDatePicker2>
+                                </SubContainer>
+                                <FormCardLeftIconSelector
+                                    clearIconLeft='150%'
+                                    label={"預約時段"}
+                                    hint={""}
+                                    placeholder={"預約時段"}
+                                    value={Time}
+                                    isSearchable
+                                    isClearable
+                                    options={hours}
+                                    onChange={(values) => { TimeResetValue(values) }}
+                                    regExpResult={TimeregExpResult}
+                                    theme={reservation.locationFormCardTextInput}
+                                ></FormCardLeftIconSelector>
+                            </FormRow>
+                            <FormRow>
+                                <FormCardSelector
+                                    //label={""}
+                                    //hint={""}
+                                    placeholder={"選擇可預約時段"}
+                                    value={OkTime}
+                                    isSearchable
+                                    options={filterMaster(MasterData, ShopChoosen, DateRegion, Time)}
+                                    //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                    onChange={(value) => { OkTimeResetValue(value) }}
+                                    regExpResult={OkTimeregExpResult}
+                                    theme={reservation.okTimeSelector}
                                 ></FormCardSelector>
                             </FormRow>
 
