@@ -429,7 +429,7 @@ const FormCardSelectorBase = (props) => {
                 {/* 輸入框 */}
                 <BasicContainer>
                     <Text style={{ textShadow: `0 0 1px ${props.label === "" ? "transparent" : "#444"}` }} theme={props?.theme?.formCardSelectLabel ?? form.formCardTextInputLabel(props)} >
-                        {props.label === "" ? "0" : props.label}
+                        {props.label === "" ? "一" : props.label}
                     </Text>
                 </BasicContainer>
                 <BasicContainer theme={
