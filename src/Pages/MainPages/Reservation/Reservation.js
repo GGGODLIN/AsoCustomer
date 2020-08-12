@@ -12,6 +12,8 @@ import { YearFrom1930to, Counties, cityAndCountiesLite, getDayByYearAndMonth, mo
 import { useForm, useSelector } from '../../../SelfHooks/useForm';
 import { SingleDatePicker, SingleDatePicker2 } from '../../../Components/DatePicker';
 import { Text } from '../../../Components/Texts'
+import { EasyButton } from '../../../Components/Buttons';
+import { PageSubTitle, PageSubTitleMobile } from '../../../Components/PageSubTitle';
 
 export const Reservation = (props) => {
 
@@ -31,7 +33,9 @@ export const Reservation = (props) => {
     const [DateRegion, DateRegionhandler, DateRegionregExpResult, DateRegionResetValue] = useForm('', [""], [""]);//日期區間欄位
     const [Time, Timehandler, TimeregExpResult, TimeResetValue] = useSelector("", [], []);
     const [OkTime, OkTimehandler, OkTimeregExpResult, OkTimeResetValue] = useSelector("", [], []);
-    console.log(OkTime);
+    const [Agreement, setAgreement] = useState(false); // 同意條款
+    const [Remark, Remarkhandler, RemarkregExpResult, RemarkResetValue] = useForm("", [], []); // 備註欄位
+    console.log(ShopChoosen);
     //#region 查詢列表API
     const getOrdersList = useCallback(async () => {
 
@@ -145,7 +149,7 @@ export const Reservation = (props) => {
     //#region 查詢座標API
     const getLocation = useCallback(async () => {
 
-        return await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${UserData?.response?.CommCounty}${UserData?.response?.CommDistrict}${UserData?.response?.CommAddr}&key=AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM`,
+        return await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${UserData?.response?.CommCounty ?? '新北市板橋區板新路'}${UserData?.response?.CommDistrict ?? ''}${UserData?.response?.CommAddr ?? ''}&key=AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM`,
 
         )//查詢角色、表格翻頁
             .then(Result => {
@@ -323,17 +327,80 @@ export const Reservation = (props) => {
 
     }
 
+    const getNewLocation = useCallback(async (addr) => {
+
+        return await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addr}&key=AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM`,
+
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                // if (PreResult.Status === 401) {
+                //     //Token過期 強制登出
+                //     clearlocalStorage();
+                //     if (window.innerWidth > 768) {
+                //         history.push("/");
+                //         setOpwnLoginCard(true);
+                //     } else {
+                //         history.push("/Login");
+                //     }
+
+                //     throw new Error("Token過期 強制登出");
+                // }
+
+                if (PreResult.status === 'OK') {
+                    console.log(PreResult)
+                    setGmapData(PreResult);
+                    return "查詢角色表格資訊成功"
+                } else {
+                    throw new Error("查詢角色表格資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                // clearlocalStorage();
+                // if (window.innerWidth > 768) {
+                //     history.push("/");
+                //     setOpwnLoginCard(true);
+                // } else {
+                //     history.push("/Login");
+                // }
+
+                throw Error;
+            })
+            .finally(() => {
+
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [executeGetNewLocation, PendingGetNewLocation] = useAsync(getNewLocation, false);
+    //#endregion
+
+
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
             {width > 768 && <BasicContainer theme={reservation.basicContainer}>
                 <Container>
-                    <SubContainer theme={{ occupy: 4 }}>
+                    <SubContainer theme={{ width: '362px', padding: '0 1rem 0 0 ' }}>
+                        <PageSubTitle title='預約足測' text={{ userSelect: "none", color: "#444", fontSize: "1.75em", fontWeight: 'normal', padding: " 0.2rem 0 8px 0", }}
+                            container={{
+                                direction: "row",
+                                justify: "space-between",
+                                //padding: "0 40px 0 40px ",
+                                width: '100%',
+                                margin: '-53px 0 24px 0',
+                                //height: '3rem',
+                            }} />
                         <FormControl theme={{
                             width: "100%",
 
-                            overflowY: "scroll",
-                            height: "calc( 100% - 20.1rem )"
+                            //overflowY: "scroll",
+                            //height: "calc( 100% - 20.1rem )"
                         }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
 
 
@@ -371,7 +438,7 @@ export const Reservation = (props) => {
                                     isSearchable
                                     options={filterShop(ShopData, County, District)}
                                     //defaultValue={ { value: '1', label: 'Chocolate' }}
-                                    onChange={(value) => { ShopChoosenResetValue(value) }}
+                                    onChange={(value) => { ShopChoosenResetValue(value); executeGetNewLocation(`${value.County}${value.District}${value.Addr}`); }}
                                     regExpResult={ShopChoosenregExpResult}
                                     theme={reservation.birthFormCardSelector}
                                 ></FormCardSelector>
@@ -402,7 +469,7 @@ export const Reservation = (props) => {
                                 <FormCardSelector
                                     //label={""}
                                     //hint={""}
-                                    placeholder={"選擇可預約時段"}
+                                    placeholder={filterMaster(MasterData, ShopChoosen, DateRegion, Time)?.length > 0 ? "選擇可預約時段" : '該時段無服務足健師，請重新選擇'}
                                     value={OkTime}
                                     isSearchable
                                     options={filterMaster(MasterData, ShopChoosen, DateRegion, Time)}
@@ -415,11 +482,68 @@ export const Reservation = (props) => {
 
 
                         </FormControl>
+                        <Container>
+                            <SubContainer theme={{ occupy: 12, margin: '32px 0 0 0 ' }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                    <Text theme={{ ...reservation.textContent, fontSize: '1.125rem', fontWeight: "700", }}>{ShopChoosen?.ShopName}</Text>
+                                </Container>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>門市地址</Text>
+                                    <Text theme={reservation.textContent}>{`${ShopChoosen?.County ?? ''}${ShopChoosen?.District ?? ''}${ShopChoosen?.Addr ?? ''}`}</Text>
+                                </Container>
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 6 }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>門市電話</Text>
+                                    <Text theme={{ ...reservation.textContent, color: "#964f19" }}>{ShopChoosen?.ShopTel}</Text>
+                                </Container>
+
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 6 }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>預約人數</Text>
+                                    <Text theme={reservation.textContent}>１人</Text>
+                                </Container>
+
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", cursor: "pointer" }}>
+                                        <CheckboxWhatever checked={Agreement} onChange={() => { /* 不需要做事，用上面的onClick控制 */ }}></CheckboxWhatever>
+                                    我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
+                                </Text>
+                                </Container>
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 12 }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <FormCardTextInput
+                                        label={"備註"}
+                                        //hint={""}
+                                        value={Remark}
+                                        onChange={Remarkhandler}
+                                        regExpResult={RemarkregExpResult}
+                                        placeholder={"有什麼需要告訴我們的嗎？(選填)"}
+                                        theme={reservation.textInput}
+                                    ></FormCardTextInput>
+                                </Container>
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 12 }}>
+                                <EasyButton theme={reservation.submitButton} text={"確定預約"} onClick={() => {
+
+
+                                }} />
+                            </SubContainer>
+                        </Container>
                     </SubContainer>
-                    <SubContainer theme={{ occupy: 8, height: '600px' }}>
+                    <SubContainer theme={{ width: 'calc(100% - 362px)', height: '600px' }}>
                         {GmapData?.results && <GoogleMapReact
                             bootstrapURLKeys={{ key: 'AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM' }}
                             defaultCenter={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            center={{
                                 lat: GmapData?.results?.[0]?.geometry?.location?.lat,
                                 lng: GmapData?.results?.[0]?.geometry?.location?.lng
                             }}
@@ -439,6 +563,7 @@ export const Reservation = (props) => {
                         </GoogleMapReact>}
                     </SubContainer>
                 </Container>
+
             </BasicContainer>
             }
 
