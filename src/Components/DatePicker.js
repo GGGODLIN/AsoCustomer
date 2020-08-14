@@ -241,9 +241,11 @@ export const SingleDatePicker2 = styled(SingleDatePickerBase2).attrs((props) => 
         width: 100% !important;
     }
     .el-date-editor.el-input {
-        width: 90%;
+        width: 100%;
     }
-    
+    .el-date-editor{
+        width: 100%;
+    }
 
     // .MuiPickersDay-daySelected {
     //     color :red

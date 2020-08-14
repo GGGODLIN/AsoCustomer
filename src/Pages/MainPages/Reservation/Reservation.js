@@ -17,6 +17,7 @@ import { EasyButton } from '../../../Components/Buttons';
 import { PageSubTitle, PageSubTitleMobile } from '../../../Components/PageSubTitle';
 import { alertService } from '../../../Components/JumpAlerts';
 import { portalService } from '../../../Components/Portal';
+import { MyStepper } from '../../../Components/Stepper';
 
 export const Reservation = (props) => {
 
@@ -52,6 +53,9 @@ export const Reservation = (props) => {
     const [BirthYear, BirthYearhandler, BirthYearregExpResult, BirthYearResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日西元年"]); // 生日西元年欄位
     const [BirthMonth, BirthMonthhandler, BirthMonthregExpResult, BirthMonthResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日月份"]);// 生日月份欄位
     const [BirthDay, BirthDayhandler, BirthDayregExpResult, BirthDayResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日日期"]); // 生日日期欄位
+
+    const [Step, setStep] = useState(0);
+
 
     //#region 查詢列表API
     const getOrdersList = useCallback(async () => {
@@ -1163,7 +1167,192 @@ export const Reservation = (props) => {
 
             {/* 寬度小於768時渲染的組件 */}
             {width <= 768 && <BasicContainer theme={reservation.basicContainer}>
-                小於768時渲染的組件
+                <Container theme={{ height: '100%' }}>
+                    <SubContainer theme={{ width: '100%', height: "100%" }}>
+                        {GmapData?.results && <GoogleMapReact
+                            bootstrapURLKeys={{ key: 'AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM' }}
+                            defaultCenter={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            center={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            defaultZoom={15}
+                            layerTypes={['TransitLayer']}
+                        >
+                            <HomeIcon
+                                lat={GmapData?.results?.[0]?.geometry?.location?.lat}
+                                lng={GmapData?.results?.[0]?.geometry?.location?.lng}
+                                style={{
+                                    position: "relative",
+                                    top: "0.1rem",
+                                    height: "3rem",
+                                    width: '3rem',
+                                    color: '#964f19'
+                                }} />
+                        </GoogleMapReact>}
+                    </SubContainer>
+                    <SubContainer theme={{ width: '100%', position: 'absolute', padding: '0 5% 0 5%', backgroundColor: 'white' }}>
+                        <Container>
+                            {/* <Text onClick={() => { setStep(Step + 1) }}>123456</Text> */}
+                            <MyStepper step={Step} />
+                        </Container>
+                        <Container theme={{ margin: '16px 0 0 0' }}>
+                            {(Step === 0) && <FormControl theme={{
+                                width: "100%",
+
+                                //overflowY: "scroll",
+                                //height: "calc( 100% - 20.1rem )"
+                            }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
+
+
+                                <Text>請搜尋您欲前往的服務門市</Text>
+                                <FormRow>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"縣市"}
+                                        value={County}
+                                        isSearchable
+                                        options={Counties}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { CountyResetValue(value); DistrictResetValue(''); ShopChoosenResetValue('') }}
+                                        regExpResult={CountyregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"行政區"}
+                                        value={District}
+                                        isSearchable
+                                        options={cityAndCountiesLite[County.value]}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { DistrictResetValue(value); ShopChoosenResetValue('') }}
+                                        regExpResult={DistrictregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"門市"}
+                                        value={ShopChoosen}
+                                        isSearchable
+                                        options={filterShop(ShopData, County, District)}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => {
+                                            ShopChoosenResetValue(value);
+                                            executeGetNewLocation(`${value.County}${value.District}${value.Addr}`);
+                                            setStep(1);
+                                        }}
+                                        regExpResult={ShopChoosenregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                </FormRow>
+                            </FormControl>}
+                            {(Step === 1) && <>
+                                <SubContainer theme={{ occupy: 12, margin: '32px 0 0 0 ' }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                        <Text theme={{ ...reservation.textContent, fontSize: '1.125rem', fontWeight: "700", }}>{ShopChoosen?.ShopName}</Text>
+                                    </Container>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>門市地址</Text>
+                                        <Text theme={reservation.textContent}>{`${ShopChoosen?.County ?? ''}${ShopChoosen?.District ?? ''}${ShopChoosen?.Addr ?? ''}`}</Text>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>門市電話</Text>
+                                        <Text theme={{ ...reservation.textContent, color: "#964f19" }}>{ShopChoosen?.ShopTel}</Text>
+                                    </Container>
+
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>預約人數</Text>
+                                        <Text theme={reservation.textContent}>１人</Text>
+                                    </Container>
+
+                                </SubContainer>
+                                <FormRow>
+                                    <SubContainer theme={{ occupy: 6 }}>
+                                        <SingleDatePicker2
+                                            getDate={DateRegionResetValue}
+                                            value={DateRegion}// [startDate,endDate]
+                                        //doThings={(date) => { props.execute(dateTrans(date), dateTrans(date), SearchWord); }}
+                                        ></SingleDatePicker2>
+                                    </SubContainer>
+                                    <FormCardLeftIconSelector
+                                        clearIconLeft='150%'
+                                        label={"預約時段"}
+                                        hint={""}
+                                        placeholder={"預約時段"}
+                                        value={Time}
+                                        isSearchable
+                                        isClearable
+                                        options={hours}
+                                        onChange={(values) => { TimeResetValue(values) }}
+                                        regExpResult={TimeregExpResult}
+                                        theme={reservation.locationFormCardTextInput}
+                                    ></FormCardLeftIconSelector>
+                                </FormRow>
+                                <FormRow>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={filterMaster(MasterData, ShopChoosen, DateRegion, Time)?.length > 0 ? "選擇可預約時段" : '該時段無服務足健師，請重新選擇'}
+                                        value={OkTime}
+                                        isSearchable
+                                        options={filterMaster(MasterData, ShopChoosen, DateRegion, Time)}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { OkTimeResetValue(value) }}
+                                        regExpResult={OkTimeregExpResult}
+                                        theme={reservation.okTimeSelector}
+                                    ></FormCardSelector>
+                                </FormRow>
+                                <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", cursor: "pointer" }}>
+                                            <CheckboxWhatever checked={Agreement} onChange={() => { /* 不需要做事，用上面的onClick控制 */ }}></CheckboxWhatever>
+                                    我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
+                                </Text>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 12 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <FormCardTextInput
+                                            label={"備註"}
+                                            //hint={""}
+                                            value={Remark}
+                                            onChange={Remarkhandler}
+                                            regExpResult={RemarkregExpResult}
+                                            placeholder={"有什麼需要告訴我們的嗎？(選填)"}
+                                            theme={reservation.textInput}
+                                        ></FormCardTextInput>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                    <EasyButton theme={reservation.submitButton} text={"確定預約"} onClick={() => {
+                                        (ShopChoosen === '' ? alertService.warn('請選擇門市', { autoClose: true })
+                                            : (DateRegion === '' ? alertService.warn('請選擇預約日期', { autoClose: true })
+                                                : (Time === '' ? alertService.warn('請選擇預約時段', { autoClose: true })
+                                                    : (!Agreement ? alertService.warn('請選擇是否同意阿瘦集團服務條款', { autoClose: true })
+                                                        : (OkTime === '' ? alertService.warn('請選擇可預約時間', { autoClose: true })
+                                                            : addOrderExecute(ShopChoosen?.Id, UserData?.response?.Id, Remark, DateRegion, Time)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        );
+                                    }} />
+                                </SubContainer>
+                            </>}
+                        </Container>
+                    </SubContainer>
+                </Container>
             </BasicContainer>
             }
 
