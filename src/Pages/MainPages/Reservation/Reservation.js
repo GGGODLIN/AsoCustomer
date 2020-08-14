@@ -1,6 +1,7 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer, SubContainer, Container } from '../../../Components/Containers';
+import { dateTrans } from '../../../Handlers/DateHandler';
 import { clearlocalStorage, getItemlocalStorage, setItemlocalStorage } from '../../../Handlers/LocalStorageHandler';
 import { useHistory } from 'react-router-dom';
 import { useWindowSize } from '../../../SelfHooks/useWindowSize'
@@ -14,10 +15,12 @@ import { SingleDatePicker, SingleDatePicker2 } from '../../../Components/DatePic
 import { Text } from '../../../Components/Texts'
 import { EasyButton } from '../../../Components/Buttons';
 import { PageSubTitle, PageSubTitleMobile } from '../../../Components/PageSubTitle';
+import { alertService } from '../../../Components/JumpAlerts';
+import { portalService } from '../../../Components/Portal';
 
 export const Reservation = (props) => {
 
-    const { APIUrl, Theme, setOpwnLoginCard } = useContext(Context);
+    const { APIUrl, Theme, setOpwnLoginCard, Switch } = useContext(Context);
     const { pages: { reservationPage: { reservation } } } = Theme;
     let history = useHistory();
     const [width] = useWindowSize();
@@ -25,6 +28,7 @@ export const Reservation = (props) => {
     const [GmapData, setGmapData] = useState({});
     const [ShopData, setShopData] = useState({});
     const [MasterData, setMasterData] = useState({});
+    const [IsLogin, setIsLogin] = useState(getItemlocalStorage("Auth") ? true : false);
 
     const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇縣市"]); // 直轄地區欄位
     const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
@@ -35,7 +39,20 @@ export const Reservation = (props) => {
     const [OkTime, OkTimehandler, OkTimeregExpResult, OkTimeResetValue] = useSelector("", [], []);
     const [Agreement, setAgreement] = useState(false); // 同意條款
     const [Remark, Remarkhandler, RemarkregExpResult, RemarkResetValue] = useForm("", [], []); // 備註欄位
-    console.log(ShopChoosen);
+    console.log(IsLogin);
+
+    const [Phone, Phonehandler, PhoneregExpResult, PhoneResetValue] = useForm("", ["^.{1,}$", "^09[0-9]{8}$"], ["請輸入正確手機號碼", "請輸入正確手機格式"]); // 管理員手機欄位
+    const [Email, Emailhandler, EmailregExpResult, EmailResetValue] = useForm("", ["^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z]+$"], ["請輸入正確E-mail格式"]); // Email欄位
+    const [NewCounty, NewCountyhandler, NewCountyregExpResult, NewCountyResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇縣市"]); // 直轄地區欄位
+    const [NewDistrict, NewDistricthandler, NewDistrictregExpResult, NewDistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
+    const [NewAddr, NewAddrhandler, NewAddrregExpResult, NewAddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入詳細地址"]); // 地址欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
+    const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
+    const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
+    const [BirthYear, BirthYearhandler, BirthYearregExpResult, BirthYearResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日西元年"]); // 生日西元年欄位
+    const [BirthMonth, BirthMonthhandler, BirthMonthregExpResult, BirthMonthResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日月份"]);// 生日月份欄位
+    const [BirthDay, BirthDayhandler, BirthDayregExpResult, BirthDayResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日日期"]); // 生日日期欄位
+
     //#region 查詢列表API
     const getOrdersList = useCallback(async () => {
 
@@ -198,6 +215,266 @@ export const Reservation = (props) => {
     }, [APIUrl, history])
 
     const [executeGetLocation, PendingGetLocation] = useAsync(getLocation, true);
+    //#endregion
+
+    //#region 新增訂單API 
+    const addOrder = useCallback(async (ShopId, Uid, UserRemark, Date, Time) => {
+        //return console.log("加訂單", ShopId, Uid, UserRemark, `${dateTrans(Date)}T${Time?.value}`, Time)
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
+        return await fetch(`${APIUrl}api/Orders/Post`,
+            {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+
+                },
+                body: JSON.stringify({
+                    IsDeleted: false,
+                    ReservationDate: `${dateTrans(Date)}T${Time?.value}`,
+                    ShopId: ShopId,
+                    Status: 0,
+                    Uid: Uid,
+                    UserRemark: UserRemark,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("成功新增訂單資訊", { autoClose: true });
+                    return "成功新增顧客資訊"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增訂單資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                throw Error;
+            })
+            .finally(() => {
+                props?.close && props.close()
+                history.push('/Profile');
+                Switch();//觸發LS路由重新更新
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [addOrderExecute, addOrderPending] = useAsync(addOrder, false);
+    //#endregion
+
+    //#region 未登入時，新增帳號&登入拿token&建立訂單API 
+    const newUserDoTheseThings = useCallback(async (ShopId, Uid, UserRemark, cDate, Time, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr) => {
+        //return console.log("加訂單", ShopId, Uid, UserRemark, `${dateTrans(Date)}T${Time?.value}`, Time)
+        //return console.log(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
+        let newUid = '';
+        //建立帳號
+        await fetch(`${APIUrl}api/UserInfo/Post`,
+            {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+
+                },
+                body: JSON.stringify({
+                    cLoginName: Email,
+                    cLoginPWD: Phone,
+                    cRealName: Name,
+                    cBirthDay: (BirthYear && BirthMonth && BirthDay) ? `${BirthYear?.value}-${BirthMonth?.value}-${BirthDay?.value}` : '',
+                    CreateTime: new Date(),
+                    IsDeleted: false,
+                    CommAddr: Addr,
+                    CommCounty: County?.value,
+                    CommDistrict: District?.value,
+                    cEmail: Email,
+                    cTel: Phone,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    // clearlocalStorage();
+                    // history.push("/Login");
+                    // throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    //alertService.normal("成功新增顧客資訊", { autoClose: true });
+                    return "成功新增顧客資訊"
+                } else {
+                    //alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增顧客資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                console.warn(Error);
+                throw Error;
+            })
+            .finally(() => {
+                // props?.close && props.close()
+                // history.push('/Profile');
+                // Switch();//觸發LS路由重新更新
+            });
+
+        //登入並拿token
+        await fetch(`${APIUrl}api/Login/CustomerLogin?acc=${Email}&pwd=${Phone}`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    acc: Email,
+                    pwd: Phone
+                })
+            })//取得Token
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                if (PreResult.success) {
+                    setItemlocalStorage("LoginData", JSON.stringify(PreResult));
+                    newUid = PreResult.response?.Id;
+                    // portalService.success({
+                    //     autoClose: false,
+                    //     removeYesButton: true,
+                    //     removeNoButton: true,
+                    //     content: (
+                    //         <>
+                    //             <Text theme={loginCard.exportText}>
+                    //                 登入成功
+                    //             </Text>
+                    //         </>)
+                    // })
+                } else {
+                    //console.log(PreResult)
+                    if (PreResult?.msg) {
+                        //setMessage(PreResult.message);
+                        portalService.error({
+                            autoClose: false,
+                            removeYesButton: true,
+                            removeNoButton: true,
+                            content: (
+                                <>
+                                    <Text theme={reservation.exportText}>
+                                        {PreResult.msg}
+                                    </Text>
+                                </>)
+                        })
+                    }
+                    throw new Error("使用者資訊錯誤");
+                }
+            })
+            .catch((Error) => {
+                console.warn(Error);
+                throw Error;
+            })
+            .finally(() => {
+                //Switch();//觸發LS路由重新更新
+            });
+
+        await fetch(`${APIUrl}api/Login/JWTTokenCustomer?name=${Email}&pass=${Phone}`)//透過Token取得使用者資訊
+            .then(Result => {
+                //portalService.clear();
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.success) {
+                    setItemlocalStorage("Auth", PreResult.token);
+                    setIsLogin(true);
+                    //儲存 跨組件State LoginName: "test",
+                    //setItemlocalStorage("LoginName", PreResult.response.uRealName);
+                    //uid = PreResult.response.Id;
+                } else {
+                    clearlocalStorage();
+                    throw new Error("取得Token失敗");
+                }
+            })
+            .catch((Error) => {
+                console.warn(Error);
+                clearlocalStorage();
+                throw Error;
+            })
+            .finally(() => {
+                // props?.close && props.close()
+                // history.push('/Profile');
+                // Switch();//觸發LS路由重新更新
+            });
+
+        //新增訂單
+        return await fetch(`${APIUrl}api/Orders/Post`,
+            {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${getItemlocalStorage("Auth")}`
+
+                },
+                body: JSON.stringify({
+                    IsDeleted: false,
+                    ReservationDate: `${dateTrans(cDate)}T${Time?.value}`,
+                    ShopId: ShopId,
+                    Status: 0,
+                    Uid: newUid,
+                    UserRemark: UserRemark,
+                })
+            }
+        )//查詢角色、表格翻頁
+            .then(Result => {
+                const ResultJson = Result.clone().json();//Respone.clone()
+                return ResultJson;
+            })
+            .then((PreResult) => {
+                //console.log(PreResult)
+                if (PreResult.Status === 401) {
+                    //Token過期 強制登出
+                    clearlocalStorage();
+                    history.push("/Login");
+                    throw new Error("Token過期 強制登出");
+                }
+
+                if (PreResult.success) {
+                    alertService.normal("成功新增訂單資訊", { autoClose: true });
+                    return "成功新增顧客資訊"
+                } else {
+                    alertService.warn(PreResult.msg, { autoClose: true });
+                    throw new Error("新增訂單資訊失敗");
+                }
+            })
+            .catch((Error) => {
+                console.warn(Error);
+                throw Error;
+            })
+            .finally(() => {
+                props?.close && props.close()
+                history.push('/Profile');
+                Switch();//觸發LS路由重新更新
+            });
+
+        // 這裡要接著打refresh 延長Token存活期
+
+    }, [APIUrl, history])
+
+    const [newUserDoTheseThingsExecute, newUserDoTheseThingsPending] = useAsync(newUserDoTheseThings, false);
     //#endregion
 
     const filterShop = (array, County, District) => {
@@ -383,8 +660,8 @@ export const Reservation = (props) => {
 
     return (
         <>
-            {/* 寬度大於等於768時渲染的組件 */}
-            {width > 768 && <BasicContainer theme={reservation.basicContainer}>
+            {/* 寬度大於等於768且已登入時渲染的組件 */}
+            {(width > 768 && IsLogin) && <BasicContainer theme={reservation.basicContainer}>
                 <Container>
                     <SubContainer theme={{ width: '362px', padding: '0 1rem 0 0 ' }}>
                         <PageSubTitle title='預約足測' text={{ userSelect: "none", color: "#444", fontSize: "1.75em", fontWeight: 'normal', padding: " 0.2rem 0 8px 0", }}
@@ -530,8 +807,325 @@ export const Reservation = (props) => {
                             </SubContainer>
                             <SubContainer theme={{ occupy: 12 }}>
                                 <EasyButton theme={reservation.submitButton} text={"確定預約"} onClick={() => {
+                                    (ShopChoosen === '' ? alertService.warn('請選擇門市', { autoClose: true })
+                                        : (DateRegion === '' ? alertService.warn('請選擇預約日期', { autoClose: true })
+                                            : (Time === '' ? alertService.warn('請選擇預約時段', { autoClose: true })
+                                                : (!Agreement ? alertService.warn('請選擇是否同意阿瘦集團服務條款', { autoClose: true })
+                                                    : (OkTime === '' ? alertService.warn('請選擇可預約時間', { autoClose: true })
+                                                        : addOrderExecute(ShopChoosen?.Id, UserData?.response?.Id, Remark, DateRegion, Time)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    );
+                                }} />
+                            </SubContainer>
+                        </Container>
+                    </SubContainer>
+                    <SubContainer theme={{ width: 'calc(100% - 362px)', height: '600px' }}>
+                        {GmapData?.results && <GoogleMapReact
+                            bootstrapURLKeys={{ key: 'AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM' }}
+                            defaultCenter={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            center={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            defaultZoom={15}
+                            layerTypes={['TransitLayer']}
+                        >
+                            <HomeIcon
+                                lat={GmapData?.results?.[0]?.geometry?.location?.lat}
+                                lng={GmapData?.results?.[0]?.geometry?.location?.lng}
+                                style={{
+                                    position: "relative",
+                                    top: "0.1rem",
+                                    height: "3rem",
+                                    width: '3rem',
+                                    color: '#964f19'
+                                }} />
+                        </GoogleMapReact>}
+                    </SubContainer>
+                </Container>
+
+            </BasicContainer>
+            }
+
+            {/* 寬度大於等於768且未登入時渲染的組件 */}
+            {(width > 768 && !IsLogin) && <BasicContainer theme={reservation.basicContainer}>
+                <Container>
+                    <SubContainer theme={{ width: '362px', padding: '0 1rem 0 0 ' }}>
+                        <PageSubTitle title='預約足測' text={{ userSelect: "none", color: "#444", fontSize: "1.75em", fontWeight: 'normal', padding: " 0.2rem 0 8px 0", }}
+                            container={{
+                                direction: "row",
+                                justify: "space-between",
+                                //padding: "0 40px 0 40px ",
+                                width: '100%',
+                                margin: '-53px 0 24px 0',
+                                //height: '3rem',
+                            }} />
+                        <FormControl theme={{
+                            width: "100%",
+
+                            //overflowY: "scroll",
+                            //height: "calc( 100% - 20.1rem )"
+                        }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
 
 
+                            <Text>請搜尋您欲前往的服務門市</Text>
+                            <FormRow>
+                                <FormCardSelector
+                                    //label={""}
+                                    //hint={""}
+                                    placeholder={"縣市"}
+                                    value={County}
+                                    isSearchable
+                                    options={Counties}
+                                    //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                    onChange={(value) => { CountyResetValue(value); DistrictResetValue(''); ShopChoosenResetValue('') }}
+                                    regExpResult={CountyregExpResult}
+                                    theme={reservation.birthFormCardSelector}
+                                ></FormCardSelector>
+                                <FormCardSelector
+                                    //label={""}
+                                    //hint={""}
+                                    placeholder={"行政區"}
+                                    value={District}
+                                    isSearchable
+                                    options={cityAndCountiesLite[County.value]}
+                                    //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                    onChange={(value) => { DistrictResetValue(value); ShopChoosenResetValue('') }}
+                                    regExpResult={DistrictregExpResult}
+                                    theme={reservation.birthFormCardSelector}
+                                ></FormCardSelector>
+                                <FormCardSelector
+                                    //label={""}
+                                    //hint={""}
+                                    placeholder={"門市"}
+                                    value={ShopChoosen}
+                                    isSearchable
+                                    options={filterShop(ShopData, County, District)}
+                                    //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                    onChange={(value) => { ShopChoosenResetValue(value); executeGetNewLocation(`${value.County}${value.District}${value.Addr}`); }}
+                                    regExpResult={ShopChoosenregExpResult}
+                                    theme={reservation.birthFormCardSelector}
+                                ></FormCardSelector>
+                            </FormRow>
+                            <FormRow>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <SingleDatePicker2
+                                        getDate={DateRegionResetValue}
+                                        value={DateRegion}// [startDate,endDate]
+                                    //doThings={(date) => { props.execute(dateTrans(date), dateTrans(date), SearchWord); }}
+                                    ></SingleDatePicker2>
+                                </SubContainer>
+                                <FormCardLeftIconSelector
+                                    clearIconLeft='150%'
+                                    label={"預約時段"}
+                                    hint={""}
+                                    placeholder={"預約時段"}
+                                    value={Time}
+                                    isSearchable
+                                    isClearable
+                                    options={hours}
+                                    onChange={(values) => { TimeResetValue(values) }}
+                                    regExpResult={TimeregExpResult}
+                                    theme={reservation.locationFormCardTextInput}
+                                ></FormCardLeftIconSelector>
+                            </FormRow>
+                            <FormRow>
+                                <FormCardSelector
+                                    //label={""}
+                                    //hint={""}
+                                    placeholder={filterMaster(MasterData, ShopChoosen, DateRegion, Time)?.length > 0 ? "選擇可預約時段" : '該時段無服務足健師，請重新選擇'}
+                                    value={OkTime}
+                                    isSearchable
+                                    options={filterMaster(MasterData, ShopChoosen, DateRegion, Time)}
+                                    //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                    onChange={(value) => { OkTimeResetValue(value) }}
+                                    regExpResult={OkTimeregExpResult}
+                                    theme={reservation.okTimeSelector}
+                                ></FormCardSelector>
+                            </FormRow>
+
+
+                        </FormControl>
+                        <Container>
+                            <SubContainer theme={{ occupy: 12, margin: '32px 0 0 0 ' }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                    <Text theme={{ ...reservation.textContent, fontSize: '1.125rem', fontWeight: "700", }}>{ShopChoosen?.ShopName}</Text>
+                                </Container>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>門市地址</Text>
+                                    <Text theme={reservation.textContent}>{`${ShopChoosen?.County ?? ''}${ShopChoosen?.District ?? ''}${ShopChoosen?.Addr ?? ''}`}</Text>
+                                </Container>
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 6 }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>門市電話</Text>
+                                    <Text theme={{ ...reservation.textContent, color: "#964f19" }}>{ShopChoosen?.ShopTel}</Text>
+                                </Container>
+
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 6 }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text theme={reservation.textSmallTitle}>預約人數</Text>
+                                    <Text theme={reservation.textContent}>１人</Text>
+                                </Container>
+
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 12 }}>
+                                <FormControl theme={{
+                                    width: "100%",
+                                    //padding: "0 2.1rem 0",
+                                    overflowY: "scroll",
+                                    //height: "calc( 100% - 20.1rem )"
+                                }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
+                                    <FormRow>
+                                        <FormCardTextInput
+                                            label={(<>姓名<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            //hint={""}
+                                            value={Name}
+                                            onChange={Namehandler}
+                                            regExpResult={NameregExpResult}
+                                            placeholder={"請輸入真實中文姓名，以便確認您的預約資料"}
+                                            theme={reservation.AccountTextInput}
+                                        ></FormCardTextInput>
+                                    </FormRow>
+                                    <FormRow>
+                                        <FormCardTextInput
+                                            label={(<>Email<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            hint={"email將作為您的登入帳號，日後不可修改"}
+                                            value={Email}
+                                            onChange={Emailhandler}
+                                            regExpResult={EmailregExpResult}
+                                            placeholder={"aso_service@gmail.com"}
+                                            theme={reservation.AccountTextInput}
+                                        ></FormCardTextInput>
+                                    </FormRow>
+                                    <FormRow>
+                                        <FormCardTextInput
+                                            label={(<>手機號碼<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            hint={"手機號碼將作為您的登入密碼"}
+                                            value={Phone}
+                                            onChange={Phonehandler}
+                                            regExpResult={PhoneregExpResult}
+                                            placeholder={"0966888168"}
+                                            theme={reservation.AccountTextInput}
+                                        ></FormCardTextInput>
+                                    </FormRow>
+                                    <FormRow>
+                                        <FormCardSelector
+                                            label={"出生年月日"}
+                                            hint={""}
+                                            placeholder={"西元年"}
+                                            value={BirthYear}
+                                            isSearchable
+                                            options={YearFrom1930to(2020)}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthYearResetValue(value); BirthMonthResetValue(''); BirthDayResetValue('') }}
+                                            regExpResult={BirthYearregExpResult}
+                                            theme={reservation.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                        <FormCardSelector
+                                            label={""}
+                                            hint={""}
+                                            placeholder={"月份"}
+                                            value={BirthMonth}
+                                            isSearchable
+                                            options={month}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthMonthResetValue(value); BirthDayResetValue('') }}
+                                            regExpResult={BirthMonthregExpResult}
+                                            theme={reservation.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                        <FormCardSelector
+                                            label={""}
+                                            hint={""}
+                                            placeholder={"日期"}
+                                            value={BirthDay}
+                                            isSearchable
+                                            options={getDayByYearAndMonth(BirthYear.value, BirthMonth.value)}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { BirthDayResetValue(value) }}
+                                            regExpResult={BirthDayregExpResult}
+                                            theme={reservation.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                    </FormRow>
+
+                                    <FormRow>
+                                        <FormCardSelector
+                                            label={"通訊地址"}
+                                            //hint={""}
+                                            placeholder={"縣市"}
+                                            value={NewCounty}
+                                            isSearchable
+                                            options={Counties}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { NewCountyResetValue(value); NewDistrictResetValue('') }}
+                                            regExpResult={NewCountyregExpResult}
+                                            theme={reservation.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                        <FormCardSelector
+                                            label={""}
+                                            //hint={""}
+                                            placeholder={"行政區"}
+                                            value={NewDistrict}
+                                            isSearchable
+                                            options={cityAndCountiesLite[County.value]}
+                                            //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                            onChange={(value) => { NewDistrictResetValue(value) }}
+                                            regExpResult={NewDistrictregExpResult}
+                                            theme={reservation.birthFormCardSelector}
+                                        ></FormCardSelector>
+                                    </FormRow>
+                                    <FormRow>
+                                        <FormCardTextInput
+                                            //label={""}
+                                            hint={""}
+                                            value={NewAddr}
+                                            onChange={NewAddrhandler}
+                                            regExpResult={NewAddrregExpResult}
+                                            placeholder={"忠孝東路四段 100 號 3 樓"}
+                                            theme={reservation.AccountTextInput}
+                                        ></FormCardTextInput>
+                                    </FormRow>
+
+                                </FormControl>
+                            </SubContainer>
+                            <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                <Container theme={{ direction: 'column' }}>
+                                    <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", cursor: "pointer" }}>
+                                        <CheckboxWhatever checked={Agreement} onChange={() => { /* 不需要做事，用上面的onClick控制 */ }}></CheckboxWhatever>
+                                    我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
+                                </Text>
+                                </Container>
+                            </SubContainer>
+
+                            <SubContainer theme={{ occupy: 12 }}>
+                                <EasyButton theme={reservation.submitButton} text={"確定預約"} onClick={() => {
+                                    (ShopChoosen === '' ? alertService.warn('請選擇門市', { autoClose: true })
+                                        : (DateRegion === '' ? alertService.warn('請選擇預約日期', { autoClose: true })
+                                            : (Time === '' ? alertService.warn('請選擇預約時段', { autoClose: true })
+                                                : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
+
+                                                    : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+
+                                                        : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                                            : (!Agreement ? alertService.warn('請選擇是否同意阿瘦集團服務條款', { autoClose: true })
+                                                                : (OkTime === '' ? alertService.warn('請選擇可預約時間', { autoClose: true })
+                                                                    : newUserDoTheseThingsExecute(ShopChoosen?.Id, UserData?.response?.Id, Remark, DateRegion, Time, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, NewCounty, NewDistrict, NewAddr)
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    );
                                 }} />
                             </SubContainer>
                         </Container>
