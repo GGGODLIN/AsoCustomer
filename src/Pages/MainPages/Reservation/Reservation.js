@@ -404,7 +404,7 @@ export const Reservation = (props) => {
                 //console.log(PreResult)
                 if (PreResult.success) {
                     setItemlocalStorage("Auth", PreResult.token);
-                    setIsLogin(true);
+                    //setIsLogin(true);
                     //儲存 跨組件State LoginName: "test",
                     //setItemlocalStorage("LoginName", PreResult.response.uRealName);
                     //uid = PreResult.response.Id;
