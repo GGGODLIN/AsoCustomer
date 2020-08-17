@@ -1255,7 +1255,29 @@ export const Reservation = (props) => {
                             {(Step === 1) && <>
                                 <SubContainer theme={{ occupy: 12, margin: '32px 0 0 0 ' }}>
                                     <Container theme={{ direction: 'column' }}>
-                                        <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                        <SubContainer theme={{ occupy: 12 }}>
+                                            <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                            <EasyButton theme={{
+                                                position: 'absolute',
+                                                right: '0px',
+                                                top: '0px',
+                                                backgroundColor: "#fff",
+                                                display: "inline-block",
+                                                width: "7rem",
+                                                height: "2rem",
+                                                lineHeight: "2rem",
+                                                color: "#964f19",
+                                                border: "1px solid #964f19",
+                                                borderRadius: "1.25rem",
+                                                textAlign: "center",
+                                                hoverBackgroundColor: "#964f19",
+                                                hoverColor: "#fff",
+                                                fontSize: "0.875rem",
+                                                cursor: "pointer",
+                                            }} text={"重新選擇"} onClick={() => {
+                                                setStep(0);
+                                            }} />
+                                        </SubContainer>
                                         <Text theme={{ ...reservation.textContent, fontSize: '1.125rem', fontWeight: "700", }}>{ShopChoosen?.ShopName}</Text>
                                     </Container>
                                     <Container theme={{ direction: 'column' }}>
@@ -1342,6 +1364,348 @@ export const Reservation = (props) => {
                                                     : (!Agreement ? alertService.warn('請選擇是否同意阿瘦集團服務條款', { autoClose: true })
                                                         : (OkTime === '' ? alertService.warn('請選擇可預約時間', { autoClose: true })
                                                             : addOrderExecute(ShopChoosen?.Id, UserData?.response?.Id, Remark, DateRegion, Time)
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        );
+                                    }} />
+                                </SubContainer>
+                            </>}
+                        </Container>
+                    </SubContainer>
+                </Container>
+            </BasicContainer>
+            }
+            {/* 寬度小於768時且未登入渲染的組件 */}
+            {(width <= 768 && !IsLogin) && <BasicContainer theme={reservation.basicContainer}>
+                <Container theme={{ height: '100%' }}>
+                    <SubContainer theme={{ width: '100%', height: "100%" }}>
+                        {GmapData?.results && <GoogleMapReact
+                            bootstrapURLKeys={{ key: 'AIzaSyA1h_cyazZLo1DExB0h0B2JBuOfv-yFtsM' }}
+                            defaultCenter={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            center={{
+                                lat: GmapData?.results?.[0]?.geometry?.location?.lat,
+                                lng: GmapData?.results?.[0]?.geometry?.location?.lng
+                            }}
+                            defaultZoom={15}
+                            layerTypes={['TransitLayer']}
+                        >
+                            <HomeIcon
+                                lat={GmapData?.results?.[0]?.geometry?.location?.lat}
+                                lng={GmapData?.results?.[0]?.geometry?.location?.lng}
+                                style={{
+                                    position: "relative",
+                                    top: "0.1rem",
+                                    height: "3rem",
+                                    width: '3rem',
+                                    color: '#964f19'
+                                }} />
+                        </GoogleMapReact>}
+                    </SubContainer>
+                    <SubContainer theme={{ width: '100%', position: 'absolute', padding: '0 5% 0 5%', backgroundColor: 'white' }}>
+                        <Container>
+                            {/* <Text onClick={() => { setStep(Step + 1) }}>123456</Text> */}
+                            <MyStepper step={Step} />
+                        </Container>
+                        <Container theme={{ margin: '16px 0 0 0' }}>
+                            {(Step === 0) && <FormControl theme={{
+                                width: "100%",
+
+                                //overflowY: "scroll",
+                                //height: "calc( 100% - 20.1rem )"
+                            }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
+
+
+                                <Text>請搜尋您欲前往的服務門市</Text>
+                                <FormRow>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"縣市"}
+                                        value={County}
+                                        isSearchable
+                                        options={Counties}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { CountyResetValue(value); DistrictResetValue(''); ShopChoosenResetValue('') }}
+                                        regExpResult={CountyregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"行政區"}
+                                        value={District}
+                                        isSearchable
+                                        options={cityAndCountiesLite[County.value]}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { DistrictResetValue(value); ShopChoosenResetValue('') }}
+                                        regExpResult={DistrictregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={"門市"}
+                                        value={ShopChoosen}
+                                        isSearchable
+                                        options={filterShop(ShopData, County, District)}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => {
+                                            ShopChoosenResetValue(value);
+                                            executeGetNewLocation(`${value.County}${value.District}${value.Addr}`);
+                                            setStep(1);
+                                        }}
+                                        regExpResult={ShopChoosenregExpResult}
+                                        theme={reservation.birthFormCardSelector}
+                                    ></FormCardSelector>
+                                </FormRow>
+
+                                <Text theme={{ width: '50%', display: 'inline-block', textAlign: 'end', color: '#964f19', padding: '32px 0.25rem 32px 0' }} onClick={() => { console.log("go login") }}>立即登入</Text>
+                                <Text theme={{ width: '50%', display: 'inline-block', padding: '32px 0px 32px 0.25rem' }}>加速預約</Text>
+                            </FormControl>}
+                            {(Step === 1) && <>
+                                <SubContainer theme={{ occupy: 12, margin: '32px 0 0 0 ' }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <SubContainer theme={{ occupy: 12 }}>
+                                            <Text theme={reservation.textSmallTitle}>選擇門市</Text>
+                                            <EasyButton theme={{
+                                                position: 'absolute',
+                                                right: '0px',
+                                                top: '0px',
+                                                backgroundColor: "#fff",
+                                                display: "inline-block",
+                                                width: "7rem",
+                                                height: "2rem",
+                                                lineHeight: "2rem",
+                                                color: "#964f19",
+                                                border: "1px solid #964f19",
+                                                borderRadius: "1.25rem",
+                                                textAlign: "center",
+                                                hoverBackgroundColor: "#964f19",
+                                                hoverColor: "#fff",
+                                                fontSize: "0.875rem",
+                                                cursor: "pointer",
+                                            }} text={"重新選擇"} onClick={() => {
+                                                setStep(0);
+                                            }} />
+                                        </SubContainer>
+                                        <Text theme={{ ...reservation.textContent, fontSize: '1.125rem', fontWeight: "700", }}>{ShopChoosen?.ShopName}</Text>
+                                    </Container>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>門市地址</Text>
+                                        <Text theme={reservation.textContent}>{`${ShopChoosen?.County ?? ''}${ShopChoosen?.District ?? ''}${ShopChoosen?.Addr ?? ''}`}</Text>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>門市電話</Text>
+                                        <Text theme={{ ...reservation.textContent, color: "#964f19" }}>{ShopChoosen?.ShopTel}</Text>
+                                    </Container>
+
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 6 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text theme={reservation.textSmallTitle}>預約人數</Text>
+                                        <Text theme={reservation.textContent}>１人</Text>
+                                    </Container>
+
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 12 }}>
+                                    <FormControl theme={{
+                                        width: "100%",
+                                        //padding: "0 2.1rem 0",
+                                        overflowY: "scroll",
+                                        //height: "calc( 100% - 20.1rem )"
+                                    }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
+                                        <FormRow>
+                                            <FormCardTextInput
+                                                label={(<>姓名<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                                //hint={""}
+                                                value={Name}
+                                                onChange={Namehandler}
+                                                regExpResult={NameregExpResult}
+                                                placeholder={"請輸入真實中文姓名，以便確認您的預約資料"}
+                                                theme={reservation.AccountTextInput}
+                                            ></FormCardTextInput>
+                                        </FormRow>
+                                        <FormRow>
+                                            <FormCardTextInput
+                                                label={(<>Email<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                                hint={"email將作為您的登入帳號，日後不可修改"}
+                                                value={Email}
+                                                onChange={Emailhandler}
+                                                regExpResult={EmailregExpResult}
+                                                placeholder={"aso_service@gmail.com"}
+                                                theme={reservation.AccountTextInput}
+                                            ></FormCardTextInput>
+                                        </FormRow>
+                                        <FormRow>
+                                            <FormCardTextInput
+                                                label={(<>手機號碼<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                                hint={"手機號碼將作為您的登入密碼"}
+                                                value={Phone}
+                                                onChange={Phonehandler}
+                                                regExpResult={PhoneregExpResult}
+                                                placeholder={"0966888168"}
+                                                theme={reservation.AccountTextInput}
+                                            ></FormCardTextInput>
+                                        </FormRow>
+                                        <FormRow>
+                                            <FormCardSelector
+                                                label={"出生年月日"}
+                                                hint={""}
+                                                placeholder={"西元年"}
+                                                value={BirthYear}
+                                                isSearchable
+                                                options={YearFrom1930to(2020)}
+                                                //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                                onChange={(value) => { BirthYearResetValue(value); BirthMonthResetValue(''); BirthDayResetValue('') }}
+                                                regExpResult={BirthYearregExpResult}
+                                                theme={reservation.birthFormCardSelector}
+                                            ></FormCardSelector>
+                                            <FormCardSelector
+                                                label={""}
+                                                hint={""}
+                                                placeholder={"月份"}
+                                                value={BirthMonth}
+                                                isSearchable
+                                                options={month}
+                                                //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                                onChange={(value) => { BirthMonthResetValue(value); BirthDayResetValue('') }}
+                                                regExpResult={BirthMonthregExpResult}
+                                                theme={reservation.birthFormCardSelector}
+                                            ></FormCardSelector>
+                                            <FormCardSelector
+                                                label={""}
+                                                hint={""}
+                                                placeholder={"日期"}
+                                                value={BirthDay}
+                                                isSearchable
+                                                options={getDayByYearAndMonth(BirthYear.value, BirthMonth.value)}
+                                                //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                                onChange={(value) => { BirthDayResetValue(value) }}
+                                                regExpResult={BirthDayregExpResult}
+                                                theme={reservation.birthFormCardSelector}
+                                            ></FormCardSelector>
+                                        </FormRow>
+
+                                        <FormRow>
+                                            <FormCardSelector
+                                                label={"通訊地址"}
+                                                //hint={""}
+                                                placeholder={"縣市"}
+                                                value={NewCounty}
+                                                isSearchable
+                                                options={Counties}
+                                                //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                                onChange={(value) => { NewCountyResetValue(value); NewDistrictResetValue('') }}
+                                                regExpResult={NewCountyregExpResult}
+                                                theme={reservation.birthFormCardSelector}
+                                            ></FormCardSelector>
+                                            <FormCardSelector
+                                                label={""}
+                                                //hint={""}
+                                                placeholder={"行政區"}
+                                                value={NewDistrict}
+                                                isSearchable
+                                                options={cityAndCountiesLite[County.value]}
+                                                //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                                onChange={(value) => { NewDistrictResetValue(value) }}
+                                                regExpResult={NewDistrictregExpResult}
+                                                theme={reservation.birthFormCardSelector}
+                                            ></FormCardSelector>
+                                        </FormRow>
+                                        <FormRow>
+                                            <FormCardTextInput
+                                                //label={""}
+                                                hint={""}
+                                                value={NewAddr}
+                                                onChange={NewAddrhandler}
+                                                regExpResult={NewAddrregExpResult}
+                                                placeholder={"忠孝東路四段 100 號 3 樓"}
+                                                theme={reservation.AccountTextInput}
+                                            ></FormCardTextInput>
+                                        </FormRow>
+
+                                    </FormControl>
+                                </SubContainer>
+                                <FormRow>
+                                    <SubContainer theme={{ occupy: 6 }}>
+                                        <SingleDatePicker2
+                                            getDate={DateRegionResetValue}
+                                            value={DateRegion}// [startDate,endDate]
+                                        //doThings={(date) => { props.execute(dateTrans(date), dateTrans(date), SearchWord); }}
+                                        ></SingleDatePicker2>
+                                    </SubContainer>
+                                    <FormCardLeftIconSelector
+                                        clearIconLeft='150%'
+                                        label={"預約時段"}
+                                        hint={""}
+                                        placeholder={"預約時段"}
+                                        value={Time}
+                                        isSearchable
+                                        isClearable
+                                        options={hours}
+                                        onChange={(values) => { TimeResetValue(values) }}
+                                        regExpResult={TimeregExpResult}
+                                        theme={reservation.locationFormCardTextInput}
+                                    ></FormCardLeftIconSelector>
+                                </FormRow>
+                                <FormRow>
+                                    <FormCardSelector
+                                        //label={""}
+                                        //hint={""}
+                                        placeholder={filterMaster(MasterData, ShopChoosen, DateRegion, Time)?.length > 0 ? "選擇可預約時段" : '該時段無服務足健師，請重新選擇'}
+                                        value={OkTime}
+                                        isSearchable
+                                        options={filterMaster(MasterData, ShopChoosen, DateRegion, Time)}
+                                        //defaultValue={ { value: '1', label: 'Chocolate' }}
+                                        onChange={(value) => { OkTimeResetValue(value) }}
+                                        regExpResult={OkTimeregExpResult}
+                                        theme={reservation.okTimeSelector}
+                                    ></FormCardSelector>
+                                </FormRow>
+                                <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <Text onClick={() => { setAgreement(a => !a) }} theme={{ display: "inline-block", fontSize: "0.75rem", color: "#787676", cursor: "pointer" }}>
+                                            <CheckboxWhatever checked={Agreement} onChange={() => { /* 不需要做事，用上面的onClick控制 */ }}></CheckboxWhatever>
+                                    我同意阿瘦集團服務條款及隱私政策、收到最新活動訊息
+                                </Text>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 12 }}>
+                                    <Container theme={{ direction: 'column' }}>
+                                        <FormCardTextInput
+                                            label={"備註"}
+                                            //hint={""}
+                                            value={Remark}
+                                            onChange={Remarkhandler}
+                                            regExpResult={RemarkregExpResult}
+                                            placeholder={"有什麼需要告訴我們的嗎？(選填)"}
+                                            theme={reservation.textInput}
+                                        ></FormCardTextInput>
+                                    </Container>
+                                </SubContainer>
+                                <SubContainer theme={{ occupy: 12, margin: '0 0 16px 0' }}>
+                                    <EasyButton theme={reservation.submitButton} text={"確定預約"} onClick={() => {
+                                        (ShopChoosen === '' ? alertService.warn('請選擇門市', { autoClose: true })
+                                            : (DateRegion === '' ? alertService.warn('請選擇預約日期', { autoClose: true })
+                                                : (Time === '' ? alertService.warn('請選擇預約時段', { autoClose: true })
+                                                    : (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
+
+                                                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
+
+                                                            : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                                                : (!Agreement ? alertService.warn('請選擇是否同意阿瘦集團服務條款', { autoClose: true })
+                                                                    : (OkTime === '' ? alertService.warn('請選擇可預約時間', { autoClose: true })
+                                                                        : newUserDoTheseThingsExecute(ShopChoosen?.Id, UserData?.response?.Id, Remark, DateRegion, Time, Name, Phone, Email, BirthYear, BirthMonth, BirthDay, NewCounty, NewDistrict, NewAddr)
+                                                                    )
+                                                                )
+                                                            )
                                                         )
                                                     )
                                                 )

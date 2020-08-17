@@ -7,7 +7,7 @@ export default {
         position: "fixed",
         top: "calc( 4.5rem )",
         bottom: 0,
-        //overflowY: 'scroll',
+        overflowY: 'scroll',
         //overflowX: 'scroll',
         backgroundColor: '#fff',
         scrollHeight: ".8rem",
@@ -134,7 +134,7 @@ export default {
         width: "100%",
         height: "40px",
         lineHeight: "40px",
-        margin: "16px 0 0 0 ",
+        margin: "16px 0 16px 0 ",
         hoverBackgroundColor: "#6d3f00",
     },
 }

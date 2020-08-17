@@ -462,7 +462,7 @@ export const Profile = (props) => {
                         </BasicContainer>
                         <BasicContainer theme={profile.DataContainer}>
                             <Text theme={profile.textSmallTitle} >通訊地址</Text>
-                            <Text theme={profile.textContent}>{`${UserData?.response?.CommCounty}${UserData?.response?.CommDistrict}${UserData?.response?.CommAddr}`}</Text>
+                            <Text theme={profile.textContent}>{`${UserData?.response?.CommCounty ?? ''}${UserData?.response?.CommDistrict ?? ''}${UserData?.response?.CommAddr ?? ''}`}</Text>
                         </BasicContainer>
                         <EasyButton theme={{
                             backgroundColor: "#fff",
@@ -1150,7 +1150,7 @@ export const Profile = (props) => {
                     </BasicContainer>
                     <BasicContainer theme={profile.DataContainer}>
                         <Text theme={profile.textSmallTitle} >通訊地址</Text>
-                        <Text theme={profile.textContent}>{`${UserData?.response?.CommCounty}${UserData?.response?.CommDistrict}${UserData?.response?.CommAddr}`}</Text>
+                        <Text theme={profile.textContent}>{`${UserData?.response?.CommCounty ?? ''}${UserData?.response?.CommDistrict ?? ''}${UserData?.response?.CommAddr ?? ''}`}</Text>
                     </BasicContainer>
                     <EasyButton theme={{
                         backgroundColor: "#fff",
