@@ -1,7 +1,7 @@
 import React, { useContext, useCallback, useState } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer, SubContainer, Container } from '../../../Components/Containers';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useWindowSize } from '../../../SelfHooks/useWindowSize'
 import { PageSubTitle, PageSubTitleMobile } from '../../../Components/PageSubTitle';
 import { CardTable } from '../../../Components/CardTable';
@@ -173,9 +173,14 @@ export const History = (props) => {
     return (
         <>
             {/* 寬度大於等於768時渲染的組件 */}
-            {width > 768 && <BasicContainer theme={profile.basicContainer}>
-                大於等於768時渲染的組件
-            </BasicContainer>
+            {width > 768 && <Redirect
+                to={{
+                    pathname: "/Profile",
+                }}
+            />
+            //     <BasicContainer theme={profile.basicContainer}>
+            //         大於等於768時渲染的組件
+            // </BasicContainer>
             }
 
             {/* 寬度小於768時渲染的組件 */}
