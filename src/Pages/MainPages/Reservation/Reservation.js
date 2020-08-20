@@ -1079,7 +1079,7 @@ export const Reservation = (props) => {
                                             placeholder={"行政區"}
                                             value={NewDistrict}
                                             isSearchable
-                                            options={cityAndCountiesLite[County.value]}
+                                            options={cityAndCountiesLite[NewCounty.value]}
                                             //defaultValue={ { value: '1', label: 'Chocolate' }}
                                             onChange={(value) => { NewDistrictResetValue(value) }}
                                             regExpResult={NewDistrictregExpResult}
@@ -1612,7 +1612,7 @@ export const Reservation = (props) => {
                                                 placeholder={"行政區"}
                                                 value={NewDistrict}
                                                 isSearchable
-                                                options={cityAndCountiesLite[County.value]}
+                                                options={cityAndCountiesLite[NewCounty.value]}
                                                 //defaultValue={ { value: '1', label: 'Chocolate' }}
                                                 onChange={(value) => { NewDistrictResetValue(value) }}
                                                 regExpResult={NewDistrictregExpResult}
