@@ -114,7 +114,7 @@ export const Faq = (props) => {
 
                 {/* 標題 (如果要調左右空白，自己加一個容器調Padding)*/}
                 <Container theme={{ margin: '0 0 40px 0' }}>
-                    <BasicContainer theme={{ display: "block", margin: "0 0 0.875rem 0" }}>
+                    <BasicContainer theme={{ display: "block", margin: "36px 0 0.875rem 0" }}>
                         <Text style={{ textShadow: "0px 0px 1px #964f19", userSelect: "none" }} theme={{ padding: "0 0 0 1.8rem", display: "inline-block", fontWeight: 800, fontSize: "1.5rem", color: "#964f19", backgroundColor: "#fcfdc6" }}>
                             <FootQAndA style={{ position: "absolute", left: "-0.1rem", top: "-0.4rem" }}></FootQAndA>
                     足部健康相關

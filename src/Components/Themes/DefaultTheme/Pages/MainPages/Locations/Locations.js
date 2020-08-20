@@ -1,6 +1,6 @@
 export default {
     basicContainer: {
-        height: "calc( 100% - 4.5rem )",
+        height: "calc( 100% - 8.5rem )",
         //backgroundColor: "#f7f1ed",
         width: "100%",
         padding: '0 5% 0 5%',
@@ -12,7 +12,7 @@ export default {
         backgroundColor: '#fff',
         scrollHeight: ".8rem",
         tablet: {
-            height: "100%",
+            height: "calc( 100% - 4.5rem )",
             //backgroundColor: "#f7f1ed",
             width: "100%",
             padding: '0 10% 0 10%',
