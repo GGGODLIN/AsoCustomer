@@ -1010,7 +1010,11 @@ export const Reservation = (props) => {
                                 }} sumbit={true} onSubmit={(e) => { e.preventDefault(); /*execute(Account, Pass);*/ }}>
                                     <FormRow>
                                         <FormCardTextInput
-                                            label={(<>姓名<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            label={(<><Text style={{
+                                                fontSize: '16px',
+                                                lineHeight: '22px',
+                                                margin: '0 0 4px 0'
+                                            }}>姓名</Text><Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
                                             //hint={""}
                                             value={Name}
                                             onChange={Namehandler}
