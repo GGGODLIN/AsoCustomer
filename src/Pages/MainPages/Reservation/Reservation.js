@@ -19,6 +19,8 @@ import { alertService } from '../../../Components/JumpAlerts';
 import { portalService } from '../../../Components/Portal';
 import { MyStepper } from '../../../Components/Stepper';
 
+const MyMapMarker = ({ text }) => <div>{text}</div>;
+
 export const Reservation = (props) => {
 
     const { APIUrl, Theme, setOpwnLoginCard, Switch } = useContext(Context);
@@ -860,16 +862,22 @@ export const Reservation = (props) => {
                             defaultZoom={15}
                             layerTypes={['TransitLayer']}
                         >
-                            <HomeIcon
+                            <MyMapMarker
                                 lat={GmapData?.results?.[0]?.geometry?.location?.lat}
                                 lng={GmapData?.results?.[0]?.geometry?.location?.lng}
-                                style={{
-                                    position: "relative",
-                                    top: "0.1rem",
-                                    height: "3rem",
-                                    width: '3rem',
-                                    color: '#964f19'
-                                }} />
+                                text={
+                                    <HomeIcon
+
+                                        style={{
+                                            position: "relative",
+                                            top: "0.1rem",
+                                            height: "3rem",
+                                            width: '3rem',
+                                            color: '#964f19'
+                                        }} />
+                                }
+                            />
+
                         </GoogleMapReact>}
                     </SubContainer>
                 </Container>
@@ -1180,16 +1188,21 @@ export const Reservation = (props) => {
                             defaultZoom={15}
                             layerTypes={['TransitLayer']}
                         >
-                            <HomeIcon
+                            <MyMapMarker
                                 lat={GmapData?.results?.[0]?.geometry?.location?.lat}
                                 lng={GmapData?.results?.[0]?.geometry?.location?.lng}
-                                style={{
-                                    position: "relative",
-                                    top: "0.1rem",
-                                    height: "3rem",
-                                    width: '3rem',
-                                    color: '#964f19'
-                                }} />
+                                text={
+                                    <HomeIcon
+
+                                        style={{
+                                            position: "relative",
+                                            top: "0.1rem",
+                                            height: "3rem",
+                                            width: '3rem',
+                                            color: '#964f19'
+                                        }} />
+                                }
+                            />
                         </GoogleMapReact>}
                     </SubContainer>
                 </Container>
@@ -1214,16 +1227,21 @@ export const Reservation = (props) => {
                             defaultZoom={15}
                             layerTypes={['TransitLayer']}
                         >
-                            <HomeIcon
+                            <MyMapMarker
                                 lat={GmapData?.results?.[0]?.geometry?.location?.lat}
                                 lng={GmapData?.results?.[0]?.geometry?.location?.lng}
-                                style={{
-                                    position: "relative",
-                                    top: "0.1rem",
-                                    height: "3rem",
-                                    width: '3rem',
-                                    color: '#964f19'
-                                }} />
+                                text={
+                                    <HomeIcon
+
+                                        style={{
+                                            position: "relative",
+                                            top: "0.1rem",
+                                            height: "3rem",
+                                            width: '3rem',
+                                            color: '#964f19'
+                                        }} />
+                                }
+                            />
                         </GoogleMapReact>}
                     </SubContainer>
                     <SubContainer theme={{ width: '100%', position: 'absolute', padding: '0 5% 0 5%', backgroundColor: 'white' }}>
@@ -1426,16 +1444,21 @@ export const Reservation = (props) => {
                             defaultZoom={15}
                             layerTypes={['TransitLayer']}
                         >
-                            <HomeIcon
+                            <MyMapMarker
                                 lat={GmapData?.results?.[0]?.geometry?.location?.lat}
                                 lng={GmapData?.results?.[0]?.geometry?.location?.lng}
-                                style={{
-                                    position: "relative",
-                                    top: "0.1rem",
-                                    height: "3rem",
-                                    width: '3rem',
-                                    color: '#964f19'
-                                }} />
+                                text={
+                                    <HomeIcon
+
+                                        style={{
+                                            position: "relative",
+                                            top: "0.1rem",
+                                            height: "3rem",
+                                            width: '3rem',
+                                            color: '#964f19'
+                                        }} />
+                                }
+                            />
                         </GoogleMapReact>}
                     </SubContainer>
                     <SubContainer theme={{ width: '100%', position: 'absolute', padding: '0 5% 0 5%', backgroundColor: 'white' }}>

@@ -176,7 +176,7 @@ const SingleDatePickerBase2 = (props) => {
     const [Value, setValue] = useState(new Date());
 
     useEffect(() => {
-        setValue(props?.value ?? new Date())
+        setValue(!!props?.value ? props?.value : null)
 
     }, [props.value])
 
