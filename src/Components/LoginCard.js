@@ -27,7 +27,7 @@ const LoginCardBase = (props) => {
     const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇縣市"]); // 直轄地區欄位
     const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
     const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入詳細地址"]); // 地址欄位
-    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入足健師中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入真實中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
     const [BirthYear, BirthYearhandler, BirthYearregExpResult, BirthYearResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日西元年"]); // 生日西元年欄位
@@ -39,6 +39,25 @@ const LoginCardBase = (props) => {
     const [ResetCode, ResetCodehandler, ResetCoderegExpResult, ResetCodeResetValue] = useForm("", [], []); // Code欄位
     const [ResetPwd, ResetPwdhandler, ResetPwdregExpResult, ResetPwdResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // Pwd欄位
     const [ForgetStep, setForgetStep] = useState(1); // 忘記密碼流程狀態
+
+    const resetForm = () => {
+        PhoneResetValue('');
+        EmailResetValue('');
+        CountyResetValue('');
+        DistrictResetValue('');
+        AddrResetValue('');
+        NameResetValue('');
+        AccountResetValue('');
+        PassResetValue('');
+        BirthYearResetValue('');
+        BirthMonthResetValue('');
+        BirthDayResetValue('');
+        setAgreement(false);
+        ResetEmailResetValue('');
+        ResetCodeResetValue('');
+        ResetPwdResetValue('');
+        setForgetStep(1);
+    }
 
     //#region 登入 API
     const loginVerification = useCallback(async (account, pass) => {
@@ -118,6 +137,7 @@ const LoginCardBase = (props) => {
                 throw Error;
             })
             .finally(() => {
+                resetForm();
                 props?.close && props.close()
                 history.push('/Profile');
                 Switch();//觸發LS路由重新更新
@@ -210,7 +230,7 @@ const LoginCardBase = (props) => {
                 throw Error;
             })
             .finally(() => {
-
+                resetForm();
             });
 
         // 這裡要接著打refresh 延長Token存活期
@@ -260,6 +280,7 @@ const LoginCardBase = (props) => {
                 throw Error;
             })
             .finally(() => {
+                //resetForm();
                 // props?.close && props.close()
                 // history.push('/Profile');
                 // Switch();//觸發LS路由重新更新
@@ -312,6 +333,7 @@ const LoginCardBase = (props) => {
                 throw Error;
             })
             .finally(() => {
+                //resetForm();
                 // props?.close && props.close()
                 // history.push('/Profile');
                 // Switch();//觸發LS路由重新更新
@@ -393,6 +415,7 @@ const LoginCardBase = (props) => {
                 throw Error;
             })
             .finally(() => {
+                resetForm();
                 //alertService.normal('請以剛剛重設的帳號密碼登入', { autoClose: false });
             });
 
@@ -602,10 +625,8 @@ const LoginCardBase = (props) => {
                                 <EasyButton theme={loginCard.signUpButton} text={"註冊"} onClick={() => {
                                     //全部通過檢核才可放行
                                     (NameregExpResult ? alertService.warn(NameregExpResult, { autoClose: true })
-
-                                        : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
-
-                                            : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                        : (EmailregExpResult ? alertService.warn(EmailregExpResult, { autoClose: true })
+                                            : (PhoneregExpResult ? alertService.warn(PhoneregExpResult, { autoClose: true })
                                                 : (!Agreement ? alertService.warn('請勾選是否同意阿瘦集團服務條款及隱私政策', { autoClose: true })
                                                     : AddUserExecute(Name, Phone, Email, BirthYear, BirthMonth, BirthDay, County, District, Addr)
                                                 )

@@ -31,7 +31,7 @@ export const Login = (props) => {
     const [County, Countyhandler, CountyregExpResult, CountyResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇縣市"]); // 直轄地區欄位
     const [District, Districthandler, DistrictregExpResult, DistrictResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇行政區"]); // 直轄地區欄位
     const [Addr, Addrhandler, AddrregExpResult, AddrResetValue] = useForm("", ["^.{1,}$"], ["請輸入詳細地址"]); // 地址欄位
-    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入足健師中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
+    const [Name, Namehandler, NameregExpResult, NameResetValue] = useForm("", ["^[\u4E00-\u9FA5]{1,}$", "^.{1,5}$"], ["請輸入真實中文姓名", "姓名最長為5個中文字"]); // 足健師姓名欄位
     const [Account, Accounthandler, AccountregExpResult, AccountResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
     const [Pass, Passhandler, PassregExpResult, PassResetValue] = useForm("", ["^.{1,}$", "^[0-9]{1,}$", "^.{1,999}$"], ["請輸入工號", "工號限使用數字", "最長為999個數字"]); //足健師工號欄位
     const [BirthYear, BirthYearhandler, BirthYearregExpResult, BirthYearResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日西元年"]); // 生日西元年欄位
@@ -43,6 +43,25 @@ export const Login = (props) => {
     const [ResetCode, ResetCodehandler, ResetCoderegExpResult, ResetCodeResetValue] = useForm("", [], []); // Code欄位
     const [ResetPwd, ResetPwdhandler, ResetPwdregExpResult, ResetPwdResetValue] = useForm("", ["^.{1,}$"], ["請輸入正確密碼格式"]); // Pwd欄位
     const [ForgetStep, setForgetStep] = useState(1); // 忘記密碼流程狀態
+
+    const resetForm = () => {
+        PhoneResetValue('');
+        EmailResetValue('');
+        CountyResetValue('');
+        DistrictResetValue('');
+        AddrResetValue('');
+        NameResetValue('');
+        AccountResetValue('');
+        PassResetValue('');
+        BirthYearResetValue('');
+        BirthMonthResetValue('');
+        BirthDayResetValue('');
+        setAgreement(false);
+        ResetEmailResetValue('');
+        ResetCodeResetValue('');
+        ResetPwdResetValue('');
+        setForgetStep(1);
+    }
 
     //#region 登入 API
     const loginVerification = useCallback(async (account, pass) => {
@@ -122,6 +141,7 @@ export const Login = (props) => {
                 throw Error;
             })
             .finally(() => {
+                resetForm();
                 props?.close && props.close()
                 history.push('/Profile');
                 Switch();//觸發LS路由重新更新
@@ -185,6 +205,7 @@ export const Login = (props) => {
                 throw Error;
             })
             .finally(() => {
+                resetForm();
                 props?.close && props.close()
                 history.push('/Profile');
                 Switch();//觸發LS路由重新更新
@@ -343,6 +364,7 @@ export const Login = (props) => {
                 throw Error;
             })
             .finally(() => {
+                resetForm();
                 // props?.close && props.close()
                 // history.push('/Profile');
                 // Switch();//觸發LS路由重新更新
