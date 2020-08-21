@@ -1025,7 +1025,11 @@ export const Reservation = (props) => {
                                     </FormRow>
                                     <FormRow>
                                         <FormCardTextInput
-                                            label={(<>Email<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            label={(<><Text style={{
+                                                fontSize: '16px',
+                                                lineHeight: '22px',
+                                                margin: '0 0 4px 0'
+                                            }}>Email</Text><Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
                                             hint={"email將作為您的登入帳號，日後不可修改"}
                                             value={Email}
                                             onChange={Emailhandler}
@@ -1036,7 +1040,11 @@ export const Reservation = (props) => {
                                     </FormRow>
                                     <FormRow>
                                         <FormCardTextInput
-                                            label={(<>手機號碼<Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
+                                            label={(<><Text style={{
+                                                fontSize: '16px',
+                                                lineHeight: '22px',
+                                                margin: '0 0 4px 0'
+                                            }}>手機號碼</Text><Text style={{ textShadow: "0 0 1px #d25959" }} theme={{ display: "inline-block", color: "#d25959", fontSize: " 0.9rem" }}>＊必填</Text></>)}
                                             hint={"手機號碼將作為您的登入密碼"}
                                             value={Phone}
                                             onChange={Phonehandler}
