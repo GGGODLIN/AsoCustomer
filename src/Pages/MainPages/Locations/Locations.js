@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
 export const Locations = (props) => {
     const classes = useStyles();
 
-    const { APIUrl, Theme } = useContext(Context);
+    const { APIUrl, Theme, Switch } = useContext(Context);
     const { pages: { locationsPage: { locations } } } = Theme;
     let history = useHistory();
     const [TableData, setTableData] = useState([]);
@@ -295,7 +295,7 @@ export const Locations = (props) => {
                                                 height: '21px',
                                             }}>{!!rowItem?.ShopTel ? rowItem?.ShopTel : '  '}</Text>
                                             <EasyButton
-                                                onClick={() => { console.log("立即預約") }}
+                                                onClick={() => { history.push(`Reservation?Id=${rowItem?.Id}&data=${JSON.stringify(rowItem)}`); Switch(); }}
                                                 theme={{
                                                     backgroundColor: "#964f19",
                                                     display: "inline-block",
@@ -508,7 +508,7 @@ export const Locations = (props) => {
                                                 height: '21px',
                                             }}>{!!rowItem?.ShopTel ? rowItem?.ShopTel : '  '}</Text>
                                             <EasyButton
-                                                onClick={() => { console.log("立即預約") }}
+                                                onClick={() => { history.push(`Reservation?Id=${rowItem?.Id}&data=${JSON.stringify(rowItem)}`); Switch(); }}
                                                 theme={{
                                                     backgroundColor: "#964f19",
                                                     display: "inline-block",

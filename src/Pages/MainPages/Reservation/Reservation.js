@@ -1,9 +1,9 @@
-import React, { useContext, useCallback, useState } from 'react';
+import React, { useContext, useCallback, useState, useEffect } from 'react';
 import { Context } from '../../../Store/store'
 import { BasicContainer, SubContainer, Container } from '../../../Components/Containers';
 import { dateTrans } from '../../../Handlers/DateHandler';
 import { clearlocalStorage, getItemlocalStorage, setItemlocalStorage } from '../../../Handlers/LocalStorageHandler';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useWindowSize } from '../../../SelfHooks/useWindowSize'
 import GoogleMapReact from 'google-map-react';
 import HomeIcon from '@material-ui/icons/Home';
@@ -25,9 +25,12 @@ export const Reservation = (props) => {
     const { pages: { reservationPage: { reservation } } } = Theme;
     let history = useHistory();
     const [width] = useWindowSize();
+    let urlParams = new URLSearchParams(useLocation().search);//取得參數
+    let data = JSON.parse(urlParams.get("data"));
+
     const [UserData, setUserData] = useState(JSON.parse(getItemlocalStorage("LoginData")));
     const [GmapData, setGmapData] = useState({});
-    const [ShopData, setShopData] = useState({});
+    const [ShopData, setShopData] = useState('');
     const [MasterData, setMasterData] = useState({});
     const [IsLogin, setIsLogin] = useState(getItemlocalStorage("Auth") ? true : false);
 
@@ -55,6 +58,23 @@ export const Reservation = (props) => {
     const [BirthDay, BirthDayhandler, BirthDayregExpResult, BirthDayResetValue] = useSelector("", [(value) => ((value?.value ?? "").toString()?.length > 0)], ["請選擇生日日期"]); // 生日日期欄位
 
     const [Step, setStep] = useState(0);
+
+    useEffect(() => {
+        if (!!data && !!ShopData) {
+            let DataCounty = Counties.filter((item) => item.value === data?.County);
+            let DataDistrict = cityAndCountiesLite[data?.County].filter((item) => item.value === data?.District);
+            let ShopArray = filterShop(ShopData, DataCounty[0], DataDistrict[0]).filter((item) => item?.Id === data?.Id);
+            let AutoShop = ShopArray[ShopArray.length - 1];
+            console.log("Data is", data, DataCounty, DataDistrict, AutoShop)//從網址取得參數
+            CountyResetValue(DataCounty[0]);
+            DistrictResetValue(DataDistrict[0]);
+            ShopChoosenResetValue(AutoShop);
+            executeGetNewLocation(`${data?.County ?? ''}${data?.District ?? ''}${data?.Addr ?? ''}`);
+        }
+        else {
+            console.log("nothing")//從網址取得參數
+        }
+    }, [ShopData]);
 
 
     //#region 查詢列表API
@@ -482,7 +502,7 @@ export const Reservation = (props) => {
     //#endregion
 
     const filterShop = (array, County, District) => {
-        //console.log(array, County, District)
+        //console.log("filterShop", array, County, District)
         if (County && District) {
             let matchArea = County?.value.replace('臺', '台');
 
