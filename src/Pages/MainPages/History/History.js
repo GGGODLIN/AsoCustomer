@@ -188,7 +188,7 @@ export const History = (props) => {
 
                     {/* 寬度小於768時渲染的組件 */}
                     {
-                        width <= 768 && <BasicContainer theme={profile.basicContainer}>
+                        width <= 768 && <BasicContainer theme={{ ...profile.basicContainer, padding: '3% 3% 0 3%' }}>
                             <SubContainer theme={{ occupy: 12 }}>
                                 <PageSubTitle title='最新預約' text={{ userSelect: "none", color: "#444", fontSize: "1.75em", fontWeight: 'normal', padding: " 0.2rem 0 12px 0", }}
                                     container={{

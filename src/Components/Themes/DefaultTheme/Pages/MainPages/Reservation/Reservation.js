@@ -8,7 +8,7 @@ export default {
         top: "calc( 4.5rem )",
         bottom: 0,
         overflowY: 'scroll',
-        //overflowX: 'scroll',
+        overflowX: 'scroll',
         backgroundColor: '#fff',
         scrollHeight: ".8rem",
         tablet: {

@@ -1,11 +1,11 @@
 export default {
     basicContainer: {
-        height: "calc( 100% - 4.5rem - 36px )",
+        height: "calc( 100% - 4.5rem - 48px )",
         //backgroundColor: "#f7f1ed",
         width: "100%",
-        padding: '0 3% 10% 3%',
+        padding: '10% 3% 0 3%',
         position: "fixed",
-        top: "calc( 4.5rem + 36px )",
+        top: "calc( 4.5rem )",
         bottom: 0,
         overflowY: 'scroll',
         overflowX: 'scroll',
