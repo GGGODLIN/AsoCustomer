@@ -21,7 +21,7 @@ export default {
             //right: "0rem",
             bottom: 0,
             overflowY: 'scroll',
-            overflowX: 'hidden',
+            overflowX: 'scroll',
             backgroundColor: '#fff',
             scrollHeight: ".8rem",
         }

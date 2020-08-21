@@ -182,12 +182,7 @@ const SingleDatePickerBase2 = (props) => {
 
     return (
         <>
-            <Text style={{
-                fontSize: '16px',
-                lineHeight: '22px',
-                margin: '0 0 4px 0',
-
-            }}>預約日期</Text>
+            <div>預約日期</div>
             <BasicContainer className={props.className} theme={{ width: "100%", ...props?.theme }}>
                 <DatePickerEl
                     value={Value}
@@ -224,12 +219,11 @@ export const SingleDatePicker2 = styled(SingleDatePickerBase2).attrs((props) => 
         border-bottom: 1px solid;
         border-radius: 0px;
         border-color: #666;
-        padding-top: 1rem;
+        padding-top: .1rem;
         color:#666;
         font-family: "Arial", Microsoft JhengHei, "微軟正黑體", Helvetica, sans-serif;
         font-weight: 500;
-        font-size: 12px;
-        line-height: 32px;
+        font-size: 0.875rem;
     }
     .el-input__inner:hover {
         border-color: #c0c4cc;
